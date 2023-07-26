@@ -11,7 +11,7 @@ let color_btns = document.createElement('div')
 let btns_grid = document.createElement('div')
 let color_btn = document.createElement('div')
 color_btns.setAttribute('id', 'color-buttons')
-color_btns.innerHTML = 'OR<br><br>Click a key<br> To map a color to it!'
+color_btns.innerHTML = 'OR<br><br><br><br>Click a key<br> To map a color to it!'
 btns_grid.setAttribute('id', 'buttons-grid')
 color_btn.setAttribute('class', 'color-button')
 color_pick.setAttribute('id', 'color-pick')

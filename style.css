@@ -30,7 +30,7 @@ body {
   border: 2px solid black;
   width: 550px;
   height: 550px;
-  transform: translate(325px,70px);
+  transform: translate(330px,70px);
 }
 
 #color-pick {
@@ -40,7 +40,7 @@ body {
 }
 
 #color-buttons {
-  transform: translateY(-350px);
+  transform: translateY(-380px);
   width: fit-content;
   height: fit-content;
 }
@@ -64,5 +64,5 @@ body {
   height: 40px;
   color: red;
   text-align: center;
-  transform: translateY(150px);
+  /*transform: translateY(50px);*/
 }
