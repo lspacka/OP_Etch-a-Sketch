@@ -8,6 +8,15 @@
 
 body {
   padding: 15px;
+  height: fit-content;
+}
+
+.button {
+  padding: 15px;
+  margin-top: 15px;
+  margin-bottom: 35px;
+  margin-right: 35px;
+  border-radius: 0;
 }
 
 #name {
@@ -17,11 +26,16 @@ body {
   color: rgb(132, 194, 194);
 }
 
+#slider-container {
+  text-align: center;
+  transform: translateY(35px);
+}
+
 #grid-slider {
   width: 200px;
   height: 20px;
   margin: 0 auto;
-  transform: translateY(50px);
+  transform: translateY(10px);
   border: 1px solid black;
 }
 
@@ -30,19 +44,17 @@ body {
   border: 2px solid black;
   width: 550px;
   height: 550px;
-  transform: translate(330px,70px);
-}
-
-#color-pick {
-  transform: translateY(130px);
-  width: fit-content;
-  height: fit-content;
+  transform: translateX(335px);
 }
 
 #color-buttons {
-  transform: translateY(-380px);
+  transform: translateY(-540px);
   width: fit-content;
   height: fit-content;
+}
+
+#randomize {
+  transform: translateY(359px);
 }
 
 .color-button {
@@ -61,6 +73,18 @@ body {
   margin-top: 20px;
   width: fit-content;
   height: fit-content;
+}
+
+#bg-color {
+  transform: translate(950px, -750px)
+}
+
+#show-grid {
+  transform: translate(950px, -730px)
+}
+
+#clear-grid {
+  transform: translate(765px, -620px)
 }
 
 #footer {
