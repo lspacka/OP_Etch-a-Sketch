@@ -9,6 +9,7 @@
 body {
   padding: 15px;
   height: fit-content;
+  /*overflow-x: hidden;*/
 }
 
 .button {
