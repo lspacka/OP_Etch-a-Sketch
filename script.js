@@ -1,3 +1,4 @@
+let body = document.querySelector('body')
 let grid = document.createElement('div')
 let game_name = document.createElement('div')
 let footer = document.createElement('div')
@@ -13,7 +14,7 @@ let color_btn = document.createElement('div')
 color_btns.setAttribute('id', 'color-buttons')
 color_btns.innerHTML = 'OR<br><br><br><br>Click a key<br> To map a color to it!'
 btns_grid.setAttribute('id', 'buttons-grid')
-color_btn.setAttribute('class', 'color-button')
+//color_btn.setAttribute('class', 'color-button')
 color_pick.setAttribute('id', 'color-pick')
 color_pick.textContent = 'ONE COLOR'
 pick_color_btn.textContent = 'Pick'
@@ -24,7 +25,7 @@ footer.textContent = 'Here goes something'
 game_name.setAttribute('id', 'name')
 game_name.textContent = 'Etch-a-Sketch'
 grid.setAttribute('id', 'grid-container')
-let body = document.querySelector('body')
+
 body.appendChild(game_name)
 body.appendChild(grid_slider)
 body.appendChild(color_pick)
@@ -32,8 +33,12 @@ body.appendChild(color_btns)
 color_pick.appendChild(new_line)
 color_pick.appendChild(pick_color_btn)
 color_pick.appendChild(random_color)
-for (let i = 0; i < 8; i++) {
-    btns_grid.appendChild(color_btn)
+for (let i = 0; i < 12; i++) {
+    const keys = ['Q', 'W', 'E', 'R',
+                  'A', 'S', 'D', 'F',
+                  'Z', 'X', 'C', 'V'
+                 ]
+    btns_grid.innerHTML += `<div class="color-button">${keys[i]}</div>`
 }
 color_btns.appendChild(btns_grid)
 body.appendChild(grid)
