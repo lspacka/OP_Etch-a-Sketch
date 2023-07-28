@@ -57,10 +57,12 @@ for (let i = 0; i < 12; i++) {
     btns_grid.innerHTML += `<div class="color-button">${keys[i]}</div>`
 }
 
+//  Append children to elements
 slider_container.appendChild(slider)
 color_btns.appendChild(btns_grid)
 bg_color.appendChild(new_line)
 bg_color.append(def_bgcolor, pick_bgcolor)
+
 body.appendChild(game_name)
 body.appendChild(slider_container)
 body.appendChild(color_btns)

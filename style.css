@@ -6,13 +6,21 @@
   font-size: 13px;
 }
 
+/*html {
+  padding: 15px;
+  height: 100%;
+}*/
+
 body {
   padding: 15px;
-  height: fit-content;
-  /*overflow-x: hidden;*/
+  /*margin: 0;
+  overflow: hidden;
+  height: 100%;*/
 }
 
 .button {
+  width: fit-content;
+  height: fit-content;
   padding: 15px;
   margin-top: 15px;
   margin-bottom: 35px;
@@ -21,6 +29,9 @@ body {
 }
 
 #name {
+  /*width: fit-content;
+  height: fit-content;*/
+  margin: 0 auto;
   text-align: center;
   transform: translateY(10px);
   font-size: 30px;
@@ -56,6 +67,7 @@ body {
 
 #randomize {
   transform: translateY(359px);
+  overflow: hidden;
 }
 
 .color-button {
@@ -77,6 +89,8 @@ body {
 }
 
 #bg-color {
+  width:fit-content;
+  height: fit-content;
   transform: translate(950px, -750px)
 }
 
@@ -86,11 +100,4 @@ body {
 
 #clear-grid {
   transform: translate(765px, -620px)
-}
-
-#footer {
-  height: 40px;
-  color: red;
-  text-align: center;
-  /*transform: translateY(50px);*/
 }
