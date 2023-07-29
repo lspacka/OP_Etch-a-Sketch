@@ -1,40 +1,62 @@
+//  TODO in this order:
+//  - fix vertical overflow
+//  - draw grid
+//  - set grid background
+//  - test drawing with one color
+//  - set grid clear
+//  - make size slider
+//  - set color selector for keys
+//  - set randomizer (make a random hex number generating function)
+//  - set background selector
+//  - set grid show
+
 let body = document.querySelector('body')
-let game_name = document.createElement('div')
+let big_container = document.createElement('div')
+let game_name = document.createElement('p')
 let slider_container = document.createElement('div')
-let slider = document.createElement('div')
+let instructions = document.createElement('p')
+let upper_container = document.createElement('div')
+let lower_container = document.createElement('div')
+let options_group1 = document.createElement('div')
+let options_group2 = document.createElement('div')
+//let slider = document.createElement('div')
 let grid = document.createElement('div')
 
+//  Options group 1
 let color_btns = document.createElement('div')
 let btns_grid = document.createElement('div')
 let color_btn = document.createElement('div')
 let randomize = document.createElement('button')
 
+//  Options group 2
 let bg_color = document.createElement('div')
 let def_bgcolor = document.createElement('button')
 let pick_bgcolor = document.createElement('button')
 let show_grid = document.createElement('button')
 let clear_grid = document.createElement('button')
 
-let new_line = document.createElement('p')
-
 //  Set attributes
-
+big_container.setAttribute('id', 'big-container')
 game_name.setAttribute('id', 'name')
 game_name.textContent = 'Etch-a-Sketch'
 slider_container.setAttribute('id', 'slider-container')
 slider_container.textContent = 'Grid Size'
-slider.setAttribute('id', 'grid-slider')
+instructions.setAttribute('id', 'instructions')
+instructions.textContent = 'Left click to draw. Right click to erase'
+//slider.setAttribute('id', 'grid-slider')
 grid.setAttribute('id', 'grid-container')
+upper_container.setAttribute('id', 'upper-container')
+lower_container.setAttribute('id', 'lower-container')
+options_group1.setAttribute('id', 'options-group-1')
+options_group2.setAttribute('id', 'options-group-2')
 
-//  Left side
 color_btns.setAttribute('id', 'color-buttons')
-color_btns.innerHTML = 'Click a key<br> To map a color to it!'
+color_btns.innerHTML = 'Click on a key<br> To map a color to it!'
 btns_grid.setAttribute('id', 'buttons-grid')
 randomize.setAttribute('id', 'randomize')
 randomize.setAttribute('class', 'button')
 randomize.textContent = 'Randomize'
 
-// Right side
 bg_color.setAttribute('id', 'bg-color')
 bg_color.textContent = 'Background Color'
 def_bgcolor.setAttribute('class', 'button')
@@ -58,17 +80,18 @@ for (let i = 0; i < 12; i++) {
 }
 
 //  Append children to elements
-slider_container.appendChild(slider)
+upper_container.append(game_name, slider_container)
 color_btns.appendChild(btns_grid)
-bg_color.appendChild(new_line)
-bg_color.append(def_bgcolor, pick_bgcolor)
+//bg_color.appendChild(new_line)
+bg_color.append(def_bgcolor, pick_bgcolor, show_grid, clear_grid)
+options_group1.appendChild(color_btns)
+options_group1.appendChild(randomize)
+options_group2.appendChild(bg_color)
+lower_container.appendChild(options_group1)
+lower_container.appendChild(grid)
+lower_container.appendChild(options_group2)
+big_container.appendChild(upper_container)
+big_container.appendChild(instructions)
+big_container.appendChild(lower_container)
 
-body.appendChild(game_name)
-body.appendChild(slider_container)
-body.appendChild(color_btns)
-body.appendChild(randomize)
-body.appendChild(grid)
-body.appendChild(color_btns)
-body.appendChild(bg_color)
-body.appendChild(show_grid)
-body.appendChild(clear_grid)
+body.appendChild(big_container)

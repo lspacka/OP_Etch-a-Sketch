@@ -5,68 +5,118 @@
   font-family: 'Press Start 2P';
   font-size: 13px;
 }
-
-/*html {
-  padding: 15px;
-  height: 100%;
-}*/
-
+/*
+html {
+  width: fit-content;
+}
+*/
 body {
-  padding: 15px;
-  /*margin: 0;
-  overflow: hidden;
-  height: 100%;*/
+  padding-top: 10px;
+  padding-bottom: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+  height: fit-content;
+  overflow-x: hidden;
+}
+
+#big-container {
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1 1fr;
+  grid-template-rows: repeat(2, 1fr, 2fr);
+  width: 100%;
+  height: fit-content;
+}
+
+#upper_container {
+  /*grid-template-columns: 1 1fr;
+  grid-template-rows: repeat(2, 1fr);*/
+  margin: 40px;
+  width: 100%;
+  height: 100%;
+}
+
+#lower-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1 1fr;
+  margin-top: 70px;
+  width: fit-content;
+  height: fit-content;
+}
+
+#options-group-1 {
+  padding: 25px;
+}
+
+#options-group-2 {
+  padding-top: 25px;
+  padding-left: 35px;
 }
 
 .button {
+  font-size: 1em;
   width: fit-content;
   height: fit-content;
   padding: 15px;
-  margin-top: 15px;
+  margin-top: 33px;
   margin-bottom: 35px;
   margin-right: 35px;
   border-radius: 0;
 }
 
 #name {
-  /*width: fit-content;
-  height: fit-content;*/
   margin: 0 auto;
+  width: fit-content;
   text-align: center;
-  transform: translateY(10px);
+  /*transform: translateY(10px);*/
   font-size: 30px;
   color: rgb(132, 194, 194);
 }
 
 #slider-container {
+  width: fit-content;
+  height: fit-content;
+  margin: 0 auto;
   text-align: center;
-  transform: translateY(35px);
+  /*transform: translateY(35px);*/
+}
+
+#instructions {
+  width:fit-content;
+  height: fit-content;
+  margin: 0 auto;
+  transform: translateY(50px);
+  text-align: center;
 }
 
 #grid-slider {
-  width: 200px;
-  height: 20px;
+  width: fit-content;
+  height: fit-content;
   margin: 0 auto;
   transform: translateY(10px);
   border: 1px solid black;
 }
 
 #grid-container {
+  display: grid;
   margin: 0 0; 
   border: 2px solid black;
   width: 550px;
   height: 550px;
-  transform: translateX(335px);
+  /*transform: translate(335px, -200px);*/
 }
 
 #color-buttons {
-  transform: translateY(-540px);
+  /*transform: translateY(50px);*/
   width: fit-content;
   height: fit-content;
 }
 
 #randomize {
-  transform: translateY(359px);
+  /*transform: translateY(359px);*/
+  margin-top: 40px;
   overflow: hidden;
 }
 
@@ -91,13 +141,12 @@ body {
 #bg-color {
   width:fit-content;
   height: fit-content;
-  transform: translate(950px, -750px)
 }
 
 #show-grid {
-  transform: translate(950px, -730px)
+  transform: translateY(-15px);
 }
 
 #clear-grid {
-  transform: translate(765px, -620px)
+  transform: translateY(-29px);
 }
