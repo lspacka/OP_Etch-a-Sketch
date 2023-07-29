@@ -1,6 +1,6 @@
 //  TODO in this order:
-//  - fix vertical overflow
-//  - draw grid
+//  + fix vertical overflow
+//  + draw grid dynamically
 //  - set grid background
 //  - test drawing with one color
 //  - set grid clear
@@ -10,6 +10,9 @@
 //  - set background selector
 //  - set grid show
 
+let grid_size = 16
+
+//  Create elements
 let body = document.querySelector('body')
 let big_container = document.createElement('div')
 let game_name = document.createElement('p')
@@ -78,6 +81,10 @@ for (let i = 0; i < 12; i++) {
                  ]
     btns_grid.innerHTML += `<div class="color-button">${keys[i]}</div>`
 }
+
+//  Change the grid size dynamically
+grid.style.gridTemplateColumns = `repeat(${grid_size}, 1fr)`
+grid.style.gridTemplateRows = `repeat(${grid_size}, 1fr)`
 
 //  Append children to elements
 upper_container.append(game_name, slider_container)

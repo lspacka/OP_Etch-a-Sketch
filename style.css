@@ -101,11 +101,11 @@ body {
 
 #grid-container {
   display: grid;
-  margin: 0 0; 
+  /*grid-template-columns: repeat(16, 1fr);
+  grid-template-rows: repeat(16, 1fr);*/
   border: 2px solid black;
   width: 550px;
   height: 550px;
-  /*transform: translate(335px, -200px);*/
 }
 
 #color-buttons {
