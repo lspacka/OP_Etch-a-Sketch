@@ -10,7 +10,11 @@
 //  - set background selector
 //  - set grid show
 
-let grid_size = 16
+let grid_size = 32
+let pixels
+//let pixel
+let pixel_color = '#d5e6da'
+
 
 //  Create elements
 let body = document.querySelector('body')
@@ -82,9 +86,25 @@ for (let i = 0; i < 12; i++) {
     btns_grid.innerHTML += `<div class="color-button">${keys[i]}</div>`
 }
 
-//  Change the grid size dynamically
+//  Grid population
 grid.style.gridTemplateColumns = `repeat(${grid_size}, 1fr)`
 grid.style.gridTemplateRows = `repeat(${grid_size}, 1fr)`
+
+for (let i = 0; i < grid_size; i++) {
+    for (let j = 0; j < grid_size; j++) {
+        grid.innerHTML += `<div class="pixel"></div>`       
+    }
+}
+
+pixels = grid.childNodes
+pixels.forEach(pixel => {
+    // add event listener
+    pixel.style.backgroundColor = pixel_color
+})
+
+
+//  Set background color
+//  Set event listeners on grid
 
 //  Append children to elements
 upper_container.append(game_name, slider_container)
