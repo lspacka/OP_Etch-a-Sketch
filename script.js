@@ -2,7 +2,7 @@
 //  + fix vertical overflow
 //  + draw grid dynamically
 //  - set grid background
-//  - test drawing with one color
+//  - test drawing with one color (with mousehold)
 //  - set grid clear
 //  - make size slider
 //  - set color selector for keys
@@ -10,7 +10,7 @@
 //  - set background selector
 //  - set grid show
 
-let grid_size = 32
+let grid_size = 8
 let pixels
 //let pixel
 let pixel_color = '#d5e6da'
@@ -86,6 +86,11 @@ for (let i = 0; i < 12; i++) {
     btns_grid.innerHTML += `<div class="color-button">${keys[i]}</div>`
 }
 
+//  Prevents context menu from appearing on the grid
+grid.addEventListener('contextmenu', (e) => {
+    e.preventDefault()
+})
+
 //  Grid population
 grid.style.gridTemplateColumns = `repeat(${grid_size}, 1fr)`
 grid.style.gridTemplateRows = `repeat(${grid_size}, 1fr)`
@@ -96,10 +101,14 @@ for (let i = 0; i < grid_size; i++) {
     }
 }
 
+//  Mouse drawing
 pixels = grid.childNodes
 pixels.forEach(pixel => {
-    // add event listener
-    pixel.style.backgroundColor = pixel_color
+    pixel.addEventListener('mousedown', (e) => {
+        if (e.button == 0) pixel.style.backgroundColor = pixel_color
+        if (e.button == 2) pixel.style.backgroundColor = 'transparent'
+    })
+    
 })
 
 
