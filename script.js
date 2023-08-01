@@ -1,3 +1,7 @@
+//  Did the whole structure with js because of autism.
+//  lol kidding its because Im an idiot and misunderstood the assignment
+//  also copied michalosman trick for drawing while holding the mouse button. thanks!
+
 //  TODO in this order:
 //  + fix vertical overflow
 //  + draw grid dynamically
@@ -9,11 +13,17 @@
 //  - set randomizer (make a random hex number generating function)
 //  - set background selector
 //  - set grid show
+//  - set light/dark mode for the page
 
 let grid_size = 8
 let pixels
+let mouse_down = false
+//let interval_ID
 //let pixel
 let pixel_color = '#d5e6da'
+
+document.body.onmousedown = () => (mouse_down = true)
+document.body.onmouseup = () => (mouse_down = false)
 
 
 //  Create elements
@@ -45,7 +55,7 @@ let clear_grid = document.createElement('button')
 //  Set attributes
 big_container.setAttribute('id', 'big-container')
 game_name.setAttribute('id', 'name')
-game_name.textContent = 'Etch-a-Sketch'
+game_name.textContent = 'Eche Sketch'
 slider_container.setAttribute('id', 'slider-container')
 slider_container.textContent = 'Grid Size'
 instructions.setAttribute('id', 'instructions')
@@ -58,7 +68,7 @@ options_group1.setAttribute('id', 'options-group-1')
 options_group2.setAttribute('id', 'options-group-2')
 
 color_btns.setAttribute('id', 'color-buttons')
-color_btns.innerHTML = 'Click on a key<br> To map a color to it!'
+color_btns.innerHTML = 'But first,<br> Click on a key<br> To map a color to it!'
 btns_grid.setAttribute('id', 'buttons-grid')
 randomize.setAttribute('id', 'randomize')
 randomize.setAttribute('class', 'button')
@@ -69,7 +79,7 @@ bg_color.textContent = 'Background Color'
 def_bgcolor.setAttribute('class', 'button')
 def_bgcolor.textContent = 'Default'
 pick_bgcolor.setAttribute('class', 'button')
-pick_bgcolor.textContent = 'Pick'
+pick_bgcolor.textContent = 'Choose'
 show_grid.setAttribute('class', 'button')
 show_grid.setAttribute('id', 'show-grid')
 show_grid.textContent = 'Show Grid'
@@ -87,7 +97,7 @@ for (let i = 0; i < 12; i++) {
 }
 
 //  Prevents context menu from appearing on the grid
-grid.addEventListener('contextmenu', (e) => {
+grid.addEventListener('contextmenu', e => {
     e.preventDefault()
 })
 
@@ -104,12 +114,22 @@ for (let i = 0; i < grid_size; i++) {
 //  Mouse drawing
 pixels = grid.childNodes
 pixels.forEach(pixel => {
-    pixel.addEventListener('mousedown', (e) => {
+    /*
+    pixel.addEventListener('mousedown', e => {
         if (e.button == 0) pixel.style.backgroundColor = pixel_color
         if (e.button == 2) pixel.style.backgroundColor = 'transparent'
     })
-    
+    */  
+   pixel.addEventListener('mouseover', paintPixel)
+   pixel.addEventListener('mousedown', paintPixel)
+   pixel.addEventListener('contextmenu', paintPixel)
 })
+
+function paintPixel(e) {
+    if (e.type == 'mouseover' && !mouse_down) return
+    if (e.button == 0)  e.target.style.backgroundColor = pixel_color
+     if (e.button == 2) e.target.style.backgroundColor = 'transparent'
+}
 
 
 //  Set background color
