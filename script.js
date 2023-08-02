@@ -6,23 +6,25 @@
 //  TODO in this order:
 //  + fix vertical overflow
 //  + draw grid dynamically
-//  - set grid background
+//  + set grid background
 //  + test drawing with one color (with mousehold)
 //  + set grid clear
 //  - make size slider
 //  - set color selector for keys
 //  - set randomizer (make a random hex number generating function)
-//  - set background selector
-//  - set grid show
+//  + set grid show
 //  - set light/dark mode for the page
 //  - export PNG
 
-let grid_size = 8
+let grid_size = 16
 let pixels
 let show_state = true
 let mouse_down = false
 //let interval_ID
 //let pixel
+let color_picker = document.createElement('input')
+color_picker.setAttribute('type', 'color')
+color_picker.setAttribute('id', 'color-picker')
 let pixel_color = '#d5e6da'
 
 document.body.onmousedown = () => (mouse_down = true)
@@ -52,8 +54,9 @@ let randomize = document.createElement('button')
 //  Options group 2
 let bg_color = document.createElement('div')
 let def_bgcolor = document.createElement('button')
-let pick_bgcolor = document.createElement('button')
-let show_grid = document.createElement('button')
+let pick_bgcolor = document.createElement('div')
+let pick_bg_btn = document.createElement('button')
+let show_grid_btn = document.createElement('button')
 let clear_grid = document.createElement('button')
 
 //  Set attributes
@@ -74,7 +77,8 @@ options_group2.setAttribute('id', 'options-group-2')
 color_btns.setAttribute('id', 'color-buttons')
 color_btns.innerHTML = 'But first,<br> Click on a key<br> To map a color to it!'
 btns_grid.setAttribute('id', 'buttons-grid')
-msg.textContent = 'You can right click to erase one pixel at a time'
+msg.setAttribute('id', 'message')
+msg.textContent = 'You can right click to erase one pixel at a time, or press P to switch to erase mode.'
 randomize.setAttribute('id', 'randomize')
 randomize.setAttribute('class', 'button')
 randomize.textContent = 'Randomize'
@@ -83,11 +87,12 @@ bg_color.setAttribute('id', 'bg-color')
 bg_color.textContent = 'Background Color'
 def_bgcolor.setAttribute('class', 'button')
 def_bgcolor.textContent = 'Default'
-pick_bgcolor.setAttribute('class', 'button')
-pick_bgcolor.textContent = 'Choose'
-show_grid.setAttribute('class', 'button')
-show_grid.setAttribute('id', 'show-grid')
-show_grid.textContent = 'Show Grid'
+pick_bgcolor.setAttribute('id', 'pick-bgcolor')
+pick_bg_btn.setAttribute('class', 'button')
+pick_bg_btn.textContent = 'Choose'
+show_grid_btn.setAttribute('class', 'button')
+show_grid_btn.setAttribute('id', 'show-grid')
+show_grid_btn.textContent = 'Show Grid'
 clear_grid.setAttribute('class', 'button')
 clear_grid.setAttribute('id', 'clear-grid')
 clear_grid.textContent = 'Clear'
@@ -101,7 +106,10 @@ for (let i = 0; i < 12; i++) {
     btns_grid.innerHTML += `<div class="color-button" id="">${keys[i]}</div>`
 }
 
-//  Prevents context menu from appearing on the grid
+//  Prevents dragging and context menu from appearing on the grid
+grid.addEventListener('dragstart', e => {
+    e.preventDefault()
+})
 grid.addEventListener('contextmenu', e => {
     e.preventDefault()
 })
@@ -138,13 +146,17 @@ function paintPixel(e) {
 
 //  Options group 2
 
+def_bgcolor.addEventListener('click', () => {
+    grid.style.backgroundColor = 'rgb(245, 245, 245)'
+})
+
 clear_grid.addEventListener('click', () => {
     pixels.forEach(pixel => {
         pixel.style.backgroundColor = 'transparent'
     })
 })
 
-show_grid.addEventListener('click', () => {
+show_grid_btn.addEventListener('click', () => {
     show_state ? show_state=false : show_state=true
     pixels.forEach(pixel => {
       if (show_state) {
@@ -153,17 +165,18 @@ show_grid.addEventListener('click', () => {
         pixel.style.border = 0
       }  
     })
-    console.log(show_state)
 })
+
+
 //  Append children to elements
 upper_container.append(game_name, slider_container)
 color_btns.appendChild(btns_grid)
-//bg_color.appendChild(new_line)
-bg_color.append(def_bgcolor, pick_bgcolor, show_grid, clear_grid)
+pick_bgcolor.append(color_picker,pick_bg_btn)
+bg_color.append(def_bgcolor, pick_bgcolor)
 options_group1.appendChild(color_btns)
 options_group1.appendChild(msg)
 options_group1.appendChild(randomize)
-options_group2.appendChild(bg_color)
+options_group2.append(bg_color, show_grid_btn, clear_grid)
 lower_container.appendChild(options_group1)
 lower_container.appendChild(grid)
 lower_container.appendChild(options_group2)

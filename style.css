@@ -2,14 +2,12 @@
 
 * {
   box-sizing: border-box;
+  line-height: 1.5;
   font-family: 'Press Start 2P';
   font-size: 13px;
+  user-select: none;
 }
-/*
-html {
-  width: fit-content;
-}
-*/
+
 body {
   padding-top: 10px;
   padding-bottom: 20px;
@@ -18,6 +16,15 @@ body {
   width: 100%;
   height: fit-content;
   overflow-x: hidden;
+}
+
+#color-picker {
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  transform: translateY(32px);
+  width:76%;
+  height: 50%;
 }
 
 #big-container {
@@ -103,7 +110,8 @@ body {
   display: grid;
   /*grid-template-columns: repeat(16, 1fr);
   grid-template-rows: repeat(16, 1fr);*/
-  border: 2px solid lightgray;
+  background-color: rgb(245, 245, 245);
+  border: 2px solid rgb(245, 245, 245);
   width: 550px;
   height: 550px;
 }
@@ -116,6 +124,10 @@ body {
   /*transform: translateY(50px);*/
   width: fit-content;
   height: fit-content;
+}
+
+#message {
+  margin-top: 30px;
 }
 
 #randomize {
@@ -145,6 +157,11 @@ body {
 #bg-color {
   width:fit-content;
   height: fit-content;
+}
+
+#pick-bgcolor {
+  position: relative;
+  display: inline-block;
 }
 
 #show-grid {
