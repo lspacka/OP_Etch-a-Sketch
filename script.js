@@ -1,22 +1,25 @@
 //  Did the whole structure with js because of autism.
-//  lol kidding its because Im an idiot and misunderstood the assignment
+//  lol kidding, its because Im an idiot and misunderstood the assignment
 //  also copied michalosman trick for drawing while holding the mouse button. thanks!
+//  https://github.com/michalosman/etch-a-sketch/blob/master/script.js
 
 //  TODO in this order:
 //  + fix vertical overflow
 //  + draw grid dynamically
 //  - set grid background
-//  - test drawing with one color (with mousehold)
-//  - set grid clear
+//  + test drawing with one color (with mousehold)
+//  + set grid clear
 //  - make size slider
 //  - set color selector for keys
 //  - set randomizer (make a random hex number generating function)
 //  - set background selector
 //  - set grid show
 //  - set light/dark mode for the page
+//  - export PNG
 
 let grid_size = 8
 let pixels
+let show_state = true
 let mouse_down = false
 //let interval_ID
 //let pixel
@@ -43,6 +46,7 @@ let grid = document.createElement('div')
 let color_btns = document.createElement('div')
 let btns_grid = document.createElement('div')
 let color_btn = document.createElement('div')
+let msg = document.createElement('p')
 let randomize = document.createElement('button')
 
 //  Options group 2
@@ -70,6 +74,7 @@ options_group2.setAttribute('id', 'options-group-2')
 color_btns.setAttribute('id', 'color-buttons')
 color_btns.innerHTML = 'But first,<br> Click on a key<br> To map a color to it!'
 btns_grid.setAttribute('id', 'buttons-grid')
+msg.textContent = 'You can right click to erase one pixel at a time'
 randomize.setAttribute('id', 'randomize')
 randomize.setAttribute('class', 'button')
 randomize.textContent = 'Randomize'
@@ -93,7 +98,7 @@ for (let i = 0; i < 12; i++) {
                   'A', 'S', 'D', 'F',
                   'Z', 'X', 'C', 'V'
                  ]
-    btns_grid.innerHTML += `<div class="color-button">${keys[i]}</div>`
+    btns_grid.innerHTML += `<div class="color-button" id="">${keys[i]}</div>`
 }
 
 //  Prevents context menu from appearing on the grid
@@ -124,23 +129,39 @@ pixels.forEach(pixel => {
    pixel.addEventListener('mousedown', paintPixel)
    pixel.addEventListener('contextmenu', paintPixel)
 })
-
+//  try console logging the right click
 function paintPixel(e) {
     if (e.type == 'mouseover' && !mouse_down) return
     if (e.button == 0)  e.target.style.backgroundColor = pixel_color
      if (e.button == 2) e.target.style.backgroundColor = 'transparent'
 }
 
+//  Options group 2
 
-//  Set background color
-//  Set event listeners on grid
+clear_grid.addEventListener('click', () => {
+    pixels.forEach(pixel => {
+        pixel.style.backgroundColor = 'transparent'
+    })
+})
 
+show_grid.addEventListener('click', () => {
+    show_state ? show_state=false : show_state=true
+    pixels.forEach(pixel => {
+      if (show_state) {
+        pixel.style.border = "1px solid gray"
+      } else {
+        pixel.style.border = 0
+      }  
+    })
+    console.log(show_state)
+})
 //  Append children to elements
 upper_container.append(game_name, slider_container)
 color_btns.appendChild(btns_grid)
 //bg_color.appendChild(new_line)
 bg_color.append(def_bgcolor, pick_bgcolor, show_grid, clear_grid)
 options_group1.appendChild(color_btns)
+options_group1.appendChild(msg)
 options_group1.appendChild(randomize)
 options_group2.appendChild(bg_color)
 lower_container.appendChild(options_group1)
