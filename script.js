@@ -1,6 +1,6 @@
-//  Did the whole structure with js because of autism.
+//  Messy clustercluck of a code. Did the whole structure with js because of autism.
 //  lol kidding, its because Im an idiot and misunderstood the assignment
-//  also copied michalosman trick for drawing while holding the mouse button. thanks!
+//  I also copied michalosman trick for drawing while holding the mouse button. thanks!
 //  https://github.com/michalosman/etch-a-sketch/blob/master/script.js
 
 //  TODO in this order:
@@ -14,18 +14,28 @@
 //  - set randomizer (make a random hex number generating function)
 //  + set grid show
 //  - set light/dark mode for the page
+//  - fix buttons "animation" in dark mode
 //  - export PNG
+//  - secret "exai" command
+
+//  background:         #181a1b
+//  font:               #e8e6e3
+//  color buttons:      #353431
+//  grid:               #545b5e
+//  buttons font:       #fbfbfe
+//  buttons border:     #75747a
+//  buttons bg:         #2b2a33  
 
 let grid_size = 16
 let pixels
-let show_state = true
+let show_grid = true
 let mouse_down = false
+let light_mode = true
 //let interval_ID
 //let pixel
-let color_picker = document.createElement('input')
-color_picker.setAttribute('type', 'color')
-color_picker.setAttribute('id', 'color-picker')
-let pixel_color = '#d5e6da'
+let pixel_color = '#32a899'
+
+let grid_bg = '#e8ebea'
 
 document.body.onmousedown = () => (mouse_down = true)
 document.body.onmouseup = () => (mouse_down = false)
@@ -56,8 +66,10 @@ let bg_color = document.createElement('div')
 let def_bgcolor = document.createElement('button')
 let pick_bgcolor = document.createElement('div')
 let pick_bg_btn = document.createElement('button')
+let bgcolor_picker = document.createElement('input')
 let show_grid_btn = document.createElement('button')
 let clear_grid = document.createElement('button')
+let light_switch = document.createElement('img')
 
 //  Set attributes
 big_container.setAttribute('id', 'big-container')
@@ -90,12 +102,16 @@ def_bgcolor.textContent = 'Default'
 pick_bgcolor.setAttribute('id', 'pick-bgcolor')
 pick_bg_btn.setAttribute('class', 'button')
 pick_bg_btn.textContent = 'Choose'
+bgcolor_picker.setAttribute('type', 'color')
+bgcolor_picker.setAttribute('id', 'bgcolor-picker')
 show_grid_btn.setAttribute('class', 'button')
 show_grid_btn.setAttribute('id', 'show-grid')
 show_grid_btn.textContent = 'Show Grid'
 clear_grid.setAttribute('class', 'button')
 clear_grid.setAttribute('id', 'clear-grid')
 clear_grid.textContent = 'Clear'
+light_switch.setAttribute('id', 'light-switch')
+light_switch.setAttribute('src', 'moon_temp.png')
 
 //  Create color buttons grid
 for (let i = 0; i < 12; i++) {
@@ -126,28 +142,49 @@ for (let i = 0; i < grid_size; i++) {
 
 //  Mouse drawing
 pixels = grid.childNodes
-pixels.forEach(pixel => {
-    /*
-    pixel.addEventListener('mousedown', e => {
-        if (e.button == 0) pixel.style.backgroundColor = pixel_color
-        if (e.button == 2) pixel.style.backgroundColor = 'transparent'
-    })
-    */  
+pixels.forEach(pixel => { 
    pixel.addEventListener('mouseover', paintPixel)
    pixel.addEventListener('mousedown', paintPixel)
-   pixel.addEventListener('contextmenu', paintPixel)
+   //pixel.addEventListener('contextmenu', paintPixel)
 })
 //  try console logging the right click
 function paintPixel(e) {
     if (e.type == 'mouseover' && !mouse_down) return
     if (e.button == 0)  e.target.style.backgroundColor = pixel_color
-     if (e.button == 2) e.target.style.backgroundColor = 'transparent'
+    if (e.button == 2) e.target.style.backgroundColor = 'transparent'
 }
 
-//  Options group 2
-
+//  OPTIONS GROUP 2
 def_bgcolor.addEventListener('click', () => {
-    grid.style.backgroundColor = 'rgb(245, 245, 245)'
+    if (light_mode) {
+        grid.style.backgroundColor = '#f0f2f1'
+    } else {
+        grid.style.backgroundColor = '#1e2021'
+    }
+})
+/*
+//  tryna activate the input. not working
+pick_bg_btn.addEventListener('click', () => {
+    color_picker.focus()
+})
+*/
+//  FIX!!!!!!!!!!!!!!!!!!!!!!!!!!
+if (bgcolor_picker.focus()) {
+    grid.style.backgroundColor = bgcolor_picker.value
+}
+
+//  Show grid
+show_grid_btn.addEventListener('click', () => {
+    show_grid ? show_grid=false : show_grid=true
+    pixels.forEach(pixel => {
+      if (show_grid) {
+        grid.style.border = "0.5px solid #2dd4cc"
+        pixel.style.border = "1px solid #2dd4cc"
+      } else {
+        pixel.style.border = 0
+        grid.style.border = 0
+      }  
+    })
 })
 
 clear_grid.addEventListener('click', () => {
@@ -156,27 +193,42 @@ clear_grid.addEventListener('click', () => {
     })
 })
 
-show_grid_btn.addEventListener('click', () => {
-    show_state ? show_state=false : show_state=true
-    pixels.forEach(pixel => {
-      if (show_state) {
-        pixel.style.border = "1px solid gray"
-      } else {
-        pixel.style.border = 0
-      }  
-    })
+//  Light mode switch
+light_switch.addEventListener('click', () => {
+    light_mode ? light_mode=false : light_mode=true
+    
+    if (!light_mode) {
+        body.style.backgroundColor = '#181a1b'
+        body.style.color = '#e8e6e3'
+        grid.style.backgroundColor = '#1e2021'
+        pixels.forEach(pixel => {
+            pixel.style.border = '1px solid #2dd4cc'
+        })
+        btns_grid.childNodes.forEach(button => {
+            button.style.border = '1px solid #f7fcfa'
+        })
+        let buttons = document.querySelectorAll('.button')
+        buttons.forEach(button => {
+            button.style.backgroundColor = '#2b2a33'
+            button.style.border = '2px solid #75747a'
+            button.style.color = '#d3dff4'
+        })
+        light_switch.setAttribute('src', 'sun_temp.png')
+        console.log(light_mode)
+    }
 })
-
 
 //  Append children to elements
 upper_container.append(game_name, slider_container)
 color_btns.appendChild(btns_grid)
-pick_bgcolor.append(color_picker,pick_bg_btn)
+pick_bgcolor.append(bgcolor_picker,pick_bg_btn)
 bg_color.append(def_bgcolor, pick_bgcolor)
+
 options_group1.appendChild(color_btns)
 options_group1.appendChild(msg)
 options_group1.appendChild(randomize)
-options_group2.append(bg_color, show_grid_btn, clear_grid)
+options_group2.append(bg_color, show_grid_btn, clear_grid, light_switch)
+
 lower_container.appendChild(options_group1)
 lower_container.appendChild(grid)
 lower_container.appendChild(options_group2)
