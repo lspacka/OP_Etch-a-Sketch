@@ -15,9 +15,11 @@
 //  - set color selector for keys
 //  - set randomizer (make a random hex number generating function)
 //  + set grid show
-//  - set light/dark mode for the page
+//  + set light/dark mode for the page
+//  - make grid background a bit darker
 //  - fix buttons "animations" in dark mode
 //  - export PNG
+//  - identicon generator
 //  - secret "exai" command
 
 //  background:         #181a1b
@@ -31,7 +33,9 @@
 let grid_size = 16
 let pixels
 let show_grid = true
+let grid_bgcolor = '#f0f2f1'
 let mouse_down = false
+let right_click = false
 let light_mode = true
 //let interval_ID
 //let pixel
@@ -41,6 +45,7 @@ let grid_bg = '#e8ebea'
 
 document.body.onmousedown = () => (mouse_down = true)
 document.body.onmouseup = () => (mouse_down = false)
+//document.body.oncontextmenu = () => (right_click = true)
 
 
 //  Create elements
@@ -142,42 +147,48 @@ for (let i = 0; i < grid_size; i++) {
     }
 }
 
-//  Mouse drawing
+//  Mouse drawing/erasing
 pixels = grid.childNodes
 pixels.forEach(pixel => { 
    pixel.addEventListener('mouseover', paintPixel)
    pixel.addEventListener('mousedown', paintPixel)
-   //pixel.addEventListener('contextmenu', paintPixel)
+   // these 2 below might be the key
+   //pixel.addEventListener('mouseover', erasePixel)
+   //pixel.addEventListener('mousedown', erasePixel)
 })
-//  try console logging the right click
+
 function paintPixel(e) {
     if (e.type == 'mouseover' && !mouse_down) return
-    if (e.button == 0)  e.target.style.backgroundColor = pixel_color
-    if (e.button == 2) e.target.style.backgroundColor = 'transparent'
+    if (e.button == 2) return
+    if (e.button == 0) e.target.style.backgroundColor = pixel_color
+    //if (e.button == 2) e.target.style.backgroundColor = 'transparent'
+        //  try console logging the right click
+       //   set "painted" toggle for each pixel
+}
+
+function erasePixel(e) {
+    //
 }
 
 //  OPTIONS GROUP 2
+
+//  Default grid background
 def_bgcolor.addEventListener('click', () => {
     if (light_mode) {
-        grid.style.backgroundColor = '#f0f2f1'
+        grid.style.backgroundColor = grid_bgcolor
     } else {
         grid.style.backgroundColor = '#1e2021'
     }
 })
-/*
-//  tryna activate the input. not working
-pick_bg_btn.addEventListener('click', () => {
-    color_picker.focus()
-})
-*/
-//  FIX!!!!!!!!!!!!!!!!!!!!!!!!!!
-if (bgcolor_picker.focus()) {
+
+//  Background color selector
+bgcolor_picker.onchange = () => {
     grid.style.backgroundColor = bgcolor_picker.value
 }
 
 //  Show grid
 show_grid_btn.addEventListener('click', () => {
-    show_grid ? show_grid=false : show_grid=true
+    show_grid = show_grid ? false : true
     pixels.forEach(pixel => {
       if (show_grid) {
         grid.style.border = "0.5px solid #2dd4cc"
@@ -197,17 +208,17 @@ clear_grid.addEventListener('click', () => {
 
 //  Light mode switch
 light_switch.addEventListener('click', () => {
-    light_mode ? light_mode=false : light_mode=true
+    light_mode = light_mode ? false : true
     
     if (light_mode) {
         body.style.backgroundColor = '#edf5f5'
         body.style.color = '#000000'
         grid.style.backgroundColor = '#f0f2f1'
         pixels.forEach(pixel => {
-            pixel.style.border = '1px solid #2dd4cc'
+            if (show_grid) pixel.style.border = '1px solid #2dd4cc'
         })
         btns_grid.childNodes.forEach(button => {
-            button.style.border = '1px solid #000000'
+            button.style.border = '2px solid #32a899'
         })
         let buttons = document.querySelectorAll('.button')
         buttons.forEach(button => {
@@ -222,10 +233,10 @@ light_switch.addEventListener('click', () => {
         body.style.color = '#e8e6e3'
         grid.style.backgroundColor = '#1e2021'
         pixels.forEach(pixel => {
-            pixel.style.border = '1px solid #2dd4cc'
+            if (show_grid) pixel.style.border = '1px solid #2dd4cc'
         })
         btns_grid.childNodes.forEach(button => {
-            button.style.border = '1px solid #f7fcfa'
+            button.style.border = '2px solid #f7fcfa'
         })
         let buttons = document.querySelectorAll('.button')
         buttons.forEach(button => {
