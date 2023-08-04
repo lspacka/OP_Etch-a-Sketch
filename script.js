@@ -1,6 +1,8 @@
-//  Messy clustercluck of a code. Did the whole structure with js because of autism.
-//  lol kidding, its because Im an idiot and misunderstood the assignment
-//  I also copied michalosman trick for drawing while holding the mouse button. thanks!
+//  Messy clusterfuck of a code. Did the whole structure with js because of autism.
+//  lol kidding, its because Im an idiot and misunderstood the assignment.
+//  all the little bells and whistles were challenges I set for myself.
+//  wanted to have continuous erasing with the right click, but just couldnt do it.
+//  I also copied michalosman's trick for drawing while holding the mouse button. thanks!
 //  https://github.com/michalosman/etch-a-sketch/blob/master/script.js
 
 //  TODO in this order:
@@ -14,7 +16,7 @@
 //  - set randomizer (make a random hex number generating function)
 //  + set grid show
 //  - set light/dark mode for the page
-//  - fix buttons "animation" in dark mode
+//  - fix buttons "animations" in dark mode
 //  - export PNG
 //  - secret "exai" command
 
@@ -90,7 +92,7 @@ color_btns.setAttribute('id', 'color-buttons')
 color_btns.innerHTML = 'But first,<br> Click on a key<br> To map a color to it!'
 btns_grid.setAttribute('id', 'buttons-grid')
 msg.setAttribute('id', 'message')
-msg.textContent = 'You can right click to erase one pixel at a time, or press P to switch to erase mode.'
+msg.textContent = 'You can right click to erase one pixel at a time, or press Y to switch to erase mode.'
 randomize.setAttribute('id', 'randomize')
 randomize.setAttribute('class', 'button')
 randomize.textContent = 'Randomize'
@@ -197,7 +199,25 @@ clear_grid.addEventListener('click', () => {
 light_switch.addEventListener('click', () => {
     light_mode ? light_mode=false : light_mode=true
     
-    if (!light_mode) {
+    if (light_mode) {
+        body.style.backgroundColor = '#edf5f5'
+        body.style.color = '#000000'
+        grid.style.backgroundColor = '#f0f2f1'
+        pixels.forEach(pixel => {
+            pixel.style.border = '1px solid #2dd4cc'
+        })
+        btns_grid.childNodes.forEach(button => {
+            button.style.border = '1px solid #000000'
+        })
+        let buttons = document.querySelectorAll('.button')
+        buttons.forEach(button => {
+            button.style.backgroundColor = '#e9e9ed'
+            button.style.border = '2px solid #979797'
+            button.style.color = '#000000'
+        })
+
+        light_switch.setAttribute('src', 'moon_temp.png')
+    } else {
         body.style.backgroundColor = '#181a1b'
         body.style.color = '#e8e6e3'
         grid.style.backgroundColor = '#1e2021'
@@ -213,8 +233,8 @@ light_switch.addEventListener('click', () => {
             button.style.border = '2px solid #75747a'
             button.style.color = '#d3dff4'
         })
+        
         light_switch.setAttribute('src', 'sun_temp.png')
-        console.log(light_mode)
     }
 })
 
