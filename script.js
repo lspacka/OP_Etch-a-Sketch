@@ -45,7 +45,7 @@ let light_mode = true
 //let pixel
 let pixel_color = '#32a899'
 
-let grid_bg = '#e8ebea'
+//let grid_bg = '#e8ebea'
 
 document.body.onmousedown = () => (mouse_down = true)
 document.body.onmouseup = () => (mouse_down = false)
@@ -130,7 +130,10 @@ for (let i = 0; i < 12; i++) {
                   'A', 'S', 'D', 'F',
                   'Z', 'X', 'C', 'V'
                  ]
-    btns_grid.innerHTML += `<div class="color-button" id="">${keys[i]}</div>`
+    btns_grid.innerHTML += `<div class="color-button" id="${keys[i]}">
+                              <input type="color" class="color-button-input"></input>
+                              ${keys[i]}
+                            </div>`
 }
 
 //  Prevents dragging and context menu from appearing on the grid
