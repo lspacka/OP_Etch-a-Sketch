@@ -1,8 +1,8 @@
 //  Messy clusterfuck of a code. Did the whole structure with js because of autism.
 //  lol kidding, its because Im an idiot and misunderstood the assignment.
 //  all the little bells and whistles were challenges I set for myself.
-//  wanted to have continuous erasing with the right click, but just couldnt do it.
-//  I also copied michalosman's trick for drawing while holding the mouse button. thanks!
+//  tried to implement continuous erasing by holding the right click, but just couldnt do it.
+//  I also copied michalosman's trick for drawing while holding the left click. thanks!
 //  https://github.com/michalosman/etch-a-sketch/blob/master/script.js
 
 //  TODO in this order:
@@ -11,6 +11,7 @@
 //  + set grid background
 //  + test drawing with one color (with mousehold)
 //  + set grid clear
+//  - choose grid color
 //  - make size slider
 //  - set color selector for keys
 //  - set randomizer (make a random hex number generating function)
@@ -33,7 +34,10 @@
 let grid_size = 16
 let pixels
 let show_grid = true
-let grid_bgcolor = '#f0f2f1'
+let grid_custom_bg
+let def_state = true
+let def_light_bg = '#f0f2f1'
+let def_dark_bg = '#1e2021'
 let mouse_down = false
 let right_click = false
 let light_mode = true
@@ -175,15 +179,18 @@ function erasePixel(e) {
 //  Default grid background
 def_bgcolor.addEventListener('click', () => {
     if (light_mode) {
-        grid.style.backgroundColor = grid_bgcolor
+        grid.style.backgroundColor = def_light_bg
     } else {
-        grid.style.backgroundColor = '#1e2021'
+        grid.style.backgroundColor = def_dark_bg
     }
+    def_state = true
 })
 
 //  Background color selector
 bgcolor_picker.onchange = () => {
-    grid.style.backgroundColor = bgcolor_picker.value
+    grid_custom_bg = bgcolor_picker.value
+    grid.style.backgroundColor = grid_custom_bg
+    def_state = false
 }
 
 //  Show grid
@@ -213,7 +220,11 @@ light_switch.addEventListener('click', () => {
     if (light_mode) {
         body.style.backgroundColor = '#edf5f5'
         body.style.color = '#000000'
-        grid.style.backgroundColor = '#f0f2f1'
+        if (bgcolor_picker && !def_state) {
+            grid.style.backgroundColor = grid_custom_bg
+        } else {
+            grid.style.backgroundColor = def_light_bg
+        }
         pixels.forEach(pixel => {
             if (show_grid) pixel.style.border = '1px solid #2dd4cc'
         })
@@ -231,12 +242,19 @@ light_switch.addEventListener('click', () => {
     } else {
         body.style.backgroundColor = '#181a1b'
         body.style.color = '#e8e6e3'
-        grid.style.backgroundColor = '#1e2021'
+        //  these commented out parts are for mantaining
+        //  the custom color on mode changes but they
+        //  introduce another weird bug
+        if (bgcolor_picker && !def_state) {
+            grid.style.backgroundColor = grid_custom_bg
+        } else {
+            grid.style.backgroundColor = def_dark_bg
+        }
         pixels.forEach(pixel => {
             if (show_grid) pixel.style.border = '1px solid #2dd4cc'
         })
         btns_grid.childNodes.forEach(button => {
-            button.style.border = '2px solid #f7fcfa'
+            button.style.border = '2px solid #1d4d39'
         })
         let buttons = document.querySelectorAll('.button')
         buttons.forEach(button => {
