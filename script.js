@@ -16,19 +16,12 @@
 //  - set randomizer (make a random hex number generating function)
 //  + set grid show
 //  + set light/dark mode for the page
-//  - make grid background a bit darker
+//  + make grid background a bit darker
 //  - fix buttons "animations" in dark mode (check mouseover/onmouseover event)
 //  - secret "exai" command
 //  - choose grid color(?)
 //  - export PNG(?)
 
-//  background:         #181a1b
-//  font:               #e8e6e3
-//  color buttons:      #353431
-//  grid:               #545b5e
-//  buttons font:       #fbfbfe
-//  buttons border:     #75747a
-//  buttons bg:         #2b2a33  
 
 let grid_size = 16
 let pixels
@@ -44,17 +37,16 @@ let right_click = false
 let light_mode = true
 //let interval_ID
 let def_pixcolor = '#32a899'
-let pixel_color = '#32a899'
+let current_pixcolor = def_pixcolor
 
 const keys = ['Q', 'W', 'E', 'R',
               'A', 'S', 'D', 'F',
               'Z', 'X', 'C', 'V'
-             ]
+]
 
 document.body.onmousedown = () => (mouse_down = true)
 document.body.onmouseup = () => (mouse_down = false)
 //document.body.oncontextmenu = () => (right_click = true)
-
 
 //  Create elements
 let body = document.querySelector('body')
@@ -136,19 +128,24 @@ for (let i = 0; i < 12; i++) {
                             </div>`
 }
 
-//  Set color buttons action
+//  Set color with button
 btns_grid.childNodes.forEach((key, index) => {
     let color = key.firstChild.nextSibling
     key.onchange = () => {
         key.style.backgroundColor = color.value
         colors[index] = color.value
-        console.log(index, colors[index])
-        console.log(colors)
     }
 })
 
-
-//  Associate keys with color
+//  Map key to color
+document.body.addEventListener('keypress', e => {
+    keys.forEach((key, index) => {
+        if (key == e.key || key.toLowerCase() == e.key) {
+            if (colors[index] == undefined) return
+            current_pixcolor = colors[index]
+        }
+    })
+})
 
 //  Prevents dragging and context menu from appearing on the grid
 grid.addEventListener('dragstart', e => {
@@ -181,7 +178,7 @@ pixels.forEach(pixel => {
 function paintPixel(e) {
     if (e.type == 'mouseover' && !mouse_down) return
     if (e.button == 2) return
-    if (e.button == 0) e.target.style.backgroundColor = pixel_color
+    if (e.button == 0) e.target.style.backgroundColor = current_pixcolor
     //if (e.button == 2) e.target.style.backgroundColor = 'transparent'
         //  try console logging the right click
        //   set "painted" toggle for each pixel
@@ -228,6 +225,7 @@ clear_grid.addEventListener('click', () => {
     pixels.forEach(pixel => {
         pixel.style.backgroundColor = 'transparent'
     })
+    current_pixcolor = def_pixcolor
 })
 
 //  Light mode switch
