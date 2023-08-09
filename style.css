@@ -9,7 +9,7 @@
 }
 
 body {
-  background-color: #edf5f5;
+  background-color: #f3fbfb;
   padding-top: 10px;
   padding-bottom: 20px;
   padding-left: 10px;
@@ -110,7 +110,7 @@ body {
   display: grid;
   /*grid-template-columns: repeat(16, 1fr);
   grid-template-rows: repeat(16, 1fr);*/
-  background-color: #f0f2f1;
+  background-color: #eff1f0;
   border: 0.5px solid #2dd4cc;
   width: 550px;
   height: 550px;

@@ -5,23 +5,22 @@
 //  I also copied michalosman's trick for drawing while holding the left click. thanks!
 //  https://github.com/michalosman/etch-a-sketch/blob/master/script.js
 
-//  TODO in this order:
+//  TODO:
 //  + fix vertical overflow
 //  + draw grid dynamically
 //  + set grid background
 //  + test drawing with one color (with mousehold)
 //  + set grid clear
-//  - choose grid color
 //  - make size slider
 //  - set color selector for keys
 //  - set randomizer (make a random hex number generating function)
 //  + set grid show
 //  + set light/dark mode for the page
 //  - make grid background a bit darker
-//  - fix buttons "animations" in dark mode
-//  - export PNG
-//  - identicon generator
+//  - fix buttons "animations" in dark mode (check mouseover/onmouseover event)
 //  - secret "exai" command
+//  - choose grid color(?)
+//  - export PNG(?)
 
 //  background:         #181a1b
 //  font:               #e8e6e3
@@ -33,19 +32,24 @@
 
 let grid_size = 16
 let pixels
+let colors = []
+let color_keys = []
 let show_grid = true
 let grid_custom_bg
 let def_state = true
-let def_light_bg = '#f0f2f1'
+let def_light_bg = '#eff1f0'
 let def_dark_bg = '#1e2021'
 let mouse_down = false
 let right_click = false
 let light_mode = true
 //let interval_ID
-//let pixel
+let def_pixcolor = '#32a899'
 let pixel_color = '#32a899'
 
-//let grid_bg = '#e8ebea'
+const keys = ['Q', 'W', 'E', 'R',
+              'A', 'S', 'D', 'F',
+              'Z', 'X', 'C', 'V'
+             ]
 
 document.body.onmousedown = () => (mouse_down = true)
 document.body.onmouseup = () => (mouse_down = false)
@@ -126,15 +130,25 @@ light_switch.setAttribute('src', 'moon_temp.png')
 
 //  Create color buttons grid
 for (let i = 0; i < 12; i++) {
-    const keys = ['Q', 'W', 'E', 'R',
-                  'A', 'S', 'D', 'F',
-                  'Z', 'X', 'C', 'V'
-                 ]
     btns_grid.innerHTML += `<div class="color-button" id="${keys[i]}">
-                              <input type="color" class="color-button-input"></input>
                               ${keys[i]}
+                              <input type="color" class="color-button-input"></input>
                             </div>`
 }
+
+//  Set color buttons action
+btns_grid.childNodes.forEach((key, index) => {
+    let color = key.firstChild.nextSibling
+    key.onchange = () => {
+        key.style.backgroundColor = color.value
+        colors[index] = color.value
+        console.log(index, colors[index])
+        console.log(colors)
+    }
+})
+
+
+//  Associate keys with color
 
 //  Prevents dragging and context menu from appearing on the grid
 grid.addEventListener('dragstart', e => {
@@ -189,7 +203,7 @@ def_bgcolor.addEventListener('click', () => {
     def_state = true
 })
 
-//  Background color selector
+//  Grid Background color selector
 bgcolor_picker.onchange = () => {
     grid_custom_bg = bgcolor_picker.value
     grid.style.backgroundColor = grid_custom_bg
@@ -223,6 +237,7 @@ light_switch.addEventListener('click', () => {
     if (light_mode) {
         body.style.backgroundColor = '#edf5f5'
         body.style.color = '#000000'
+
         if (bgcolor_picker && !def_state) {
             grid.style.backgroundColor = grid_custom_bg
         } else {
@@ -245,9 +260,7 @@ light_switch.addEventListener('click', () => {
     } else {
         body.style.backgroundColor = '#181a1b'
         body.style.color = '#e8e6e3'
-        //  these commented out parts are for mantaining
-        //  the custom color on mode changes but they
-        //  introduce another weird bug
+
         if (bgcolor_picker && !def_state) {
             grid.style.backgroundColor = grid_custom_bg
         } else {
