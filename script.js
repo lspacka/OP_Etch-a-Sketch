@@ -1,5 +1,5 @@
-//  Messy clusterfuck of a code. Did the whole structure with js because of autism.
-//  lol kidding, its because Im an idiot and misunderstood the assignment.
+//  Massive clusterfuck of a code. Did the whole structure with js because of autism.
+//  lol actually its because Im an idiot and misunderstood the assignment.
 //  all the little bells and whistles were challenges I set for myself.
 //  tried to implement continuous erasing by holding the right click, but just couldnt do it.
 //  I also copied michalosman's trick for drawing while holding the left click. thanks!
@@ -17,10 +17,11 @@
 //  + set grid show
 //  + set light/dark mode for the page
 //  + make grid background a bit darker
-//  - make color buttons letters more contrasting on dark mode
-//  - fix right button hold erasing or add an erase mode
+//  + make color buttons letters more contrasting on dark mode
+//  - fix right button hold erasing or add erase mode
 //  - fix buttons "animations" in dark mode (check mouseover/onmouseover event)
 //  - something like clown mode but in a narrower range like, from blue to purple
+//  - clear color buttons mapping(?)
 //  - secret "exai" command
 //  - choose grid color(?)
 //  - export PNG(?)
@@ -34,7 +35,7 @@ let show_grid = true
 let grid_custom_bg
 let def_state = true
 let def_light_bg = '#eff1f0'
-let def_dark_bg = '#1e2021'
+let def_dark_bg = '#24282a'
 let mouse_down = false
 let right_click = false
 let light_mode = true
@@ -98,10 +99,10 @@ options_group1.setAttribute('id', 'options-group-1')
 options_group2.setAttribute('id', 'options-group-2')
 
 color_btns.setAttribute('id', 'color-buttons')
-color_btns.innerHTML = 'But first,<br> Click on a key<br> To map a color to it!'
+color_btns.innerHTML = 'Click on a key<br> To map a color to it!'
 btns_grid.setAttribute('id', 'buttons-grid')
 msg.setAttribute('id', 'message')
-msg.textContent = 'You can right click to erase one pixel at a time, or press Y to switch to erase mode.'
+msg.textContent = 'You can right click to erase one pixel at a time, or press Shift to switch to erase mode.'
 clown_btn.setAttribute('id', 'clown-button')
 clown_btn.setAttribute('class', 'button')
 clown_btn.textContent = 'Clownify'
@@ -153,8 +154,7 @@ document.body.addEventListener('keypress', e => {
     })
 })
 
-
-//  Random colors
+//  Random colors function
 function hexGen() {
     const numbers = [
         'a', 'b', 'c', 'd', 'e', 'f',
@@ -173,6 +173,7 @@ function hexGen() {
     return hex_num
 }
 
+//  Clown mode
 clown_btn.addEventListener('click', () => {
     clownify = clownify ? false : true
     clown_btn.textContent = clownify ? 'Normal' : 'Clownify'
@@ -208,6 +209,7 @@ pixels.forEach(pixel => {
 
 function paintPixel(e) {
     if (e.type == 'mouseover' && !mouse_down) return
+
     if (clownify) e.target.style.backgroundColor = hexGen()
     else e.target.style.backgroundColor = current_pixcolor
     //if (e.button == 0) e.target.style.backgroundColor = current_pixcolor
@@ -264,8 +266,8 @@ light_switch.addEventListener('click', () => {
     light_mode = light_mode ? false : true
     
     if (light_mode) {
-        body.style.backgroundColor = '#edf5f5'
-        body.style.color = '#000000'
+        body.style.backgroundColor = '#f3fbfb'
+        body.style.color = '#133435'
 
         if (bgcolor_picker && !def_state) {
             grid.style.backgroundColor = grid_custom_bg
@@ -277,12 +279,13 @@ light_switch.addEventListener('click', () => {
         })
         btns_grid.childNodes.forEach(button => {
             button.style.border = '2px solid #32a899'
+            button.style.color = '#2f625f'
         })
         let buttons = document.querySelectorAll('.button')
         buttons.forEach(button => {
             button.style.backgroundColor = '#e9e9ed'
             button.style.border = '2px solid #979797'
-            button.style.color = '#000000'
+            button.style.color = '#2d2f30'
         })
 
         light_switch.setAttribute('src', 'moon_temp.png')
@@ -300,6 +303,7 @@ light_switch.addEventListener('click', () => {
         })
         btns_grid.childNodes.forEach(button => {
             button.style.border = '2px solid #1d4d39'
+            button.style.color = '#31a39d'
         })
         let buttons = document.querySelectorAll('.button')
         buttons.forEach(button => {

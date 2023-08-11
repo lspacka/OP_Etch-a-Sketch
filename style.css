@@ -10,6 +10,7 @@
 
 body {
   background-color: #f3fbfb;
+  color: #133435;
   padding-top: 10px;
   padding-bottom: 20px;
   padding-left: 10px;
@@ -71,6 +72,7 @@ body {
   margin-bottom: 35px;
   margin-right: 35px;
   border-radius: 0;
+  color: #2d2f30;
 }
 
 #name {
@@ -79,7 +81,7 @@ body {
   text-align: center;
   /*transform: translateY(10px);*/
   font-size: 30px;
-  color: rgb(132, 194, 194);
+  color: #84c2c2;
 }
 
 #slider-container {
@@ -127,7 +129,8 @@ body {
 }
 
 #message {
-  margin-top: 30px;
+  margin-top: 10px;
+  line-height: 20px;
 }
 
 #clown-button {
@@ -141,6 +144,7 @@ body {
   height: 60px;
   border: 2.5px solid #32a899;
   background-color: transparent;
+  color: #344d41;
   text-align: center;
   padding: 15px;
   margin: 5px;
@@ -190,6 +194,7 @@ body {
   height: 70px;
   border: 0;
   margin: 0 auto;
+  transform: translateY(40px);
 }
 
 #light-switch:hover {
