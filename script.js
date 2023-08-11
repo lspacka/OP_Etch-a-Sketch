@@ -12,18 +12,21 @@
 //  + test drawing with one color (with mousehold)
 //  + set grid clear
 //  - make size slider
-//  - set color selector for keys
-//  - set randomizer (make a random hex number generating function)
+//  + set color selector for keys
+//  + set clown mode (make a random hex number generating function)
 //  + set grid show
 //  + set light/dark mode for the page
 //  + make grid background a bit darker
+//  - make color buttons letters more contrasting on dark mode
+//  - fix right button hold erasing or add an erase mode
 //  - fix buttons "animations" in dark mode (check mouseover/onmouseover event)
+//  - something like clown mode but in a narrower range like, from blue to purple
 //  - secret "exai" command
 //  - choose grid color(?)
 //  - export PNG(?)
 
 
-let grid_size = 16
+let grid_size = 32
 let pixels
 let colors = []
 let color_keys = []
@@ -38,6 +41,7 @@ let light_mode = true
 //let interval_ID
 let def_pixcolor = '#32a899'
 let current_pixcolor = def_pixcolor
+let clownify = false
 
 const keys = ['Q', 'W', 'E', 'R',
               'A', 'S', 'D', 'F',
@@ -66,7 +70,7 @@ let color_btns = document.createElement('div')
 let btns_grid = document.createElement('div')
 let color_btn = document.createElement('div')
 let msg = document.createElement('p')
-let randomize = document.createElement('button')
+let clown_btn = document.createElement('button')
 
 //  Options group 2
 let bg_color = document.createElement('div')
@@ -98,9 +102,9 @@ color_btns.innerHTML = 'But first,<br> Click on a key<br> To map a color to it!'
 btns_grid.setAttribute('id', 'buttons-grid')
 msg.setAttribute('id', 'message')
 msg.textContent = 'You can right click to erase one pixel at a time, or press Y to switch to erase mode.'
-randomize.setAttribute('id', 'randomize')
-randomize.setAttribute('class', 'button')
-randomize.textContent = 'Randomize'
+clown_btn.setAttribute('id', 'clown-button')
+clown_btn.setAttribute('class', 'button')
+clown_btn.textContent = 'Clownify'
 
 bg_color.setAttribute('id', 'bg-color')
 bg_color.textContent = 'Background Color'
@@ -137,14 +141,41 @@ btns_grid.childNodes.forEach((key, index) => {
     }
 })
 
-//  Map key to color
+//  Map color to key
 document.body.addEventListener('keypress', e => {
     keys.forEach((key, index) => {
         if (key == e.key || key.toLowerCase() == e.key) {
             if (colors[index] == undefined) return
             current_pixcolor = colors[index]
+            clownify = false
+            clown_btn.textContent = clownify ? 'Normal' : 'Clownify'
         }
     })
+})
+
+
+//  Random colors
+function hexGen() {
+    const numbers = [
+        'a', 'b', 'c', 'd', 'e', 'f',
+        '0', '1', '2', '3', '4', '5',
+        '6', '7', '8', '9'
+    ]
+    let index = 0
+    let hex_num = '#'
+    let i = 0
+
+    while (i < 6) {
+        index = Math.floor(Math.random() * 16)
+        hex_num += numbers[index]
+        i++
+    }
+    return hex_num
+}
+
+clown_btn.addEventListener('click', () => {
+    clownify = clownify ? false : true
+    clown_btn.textContent = clownify ? 'Normal' : 'Clownify'
 })
 
 //  Prevents dragging and context menu from appearing on the grid
@@ -177,11 +208,11 @@ pixels.forEach(pixel => {
 
 function paintPixel(e) {
     if (e.type == 'mouseover' && !mouse_down) return
-    if (e.button == 2) return
-    if (e.button == 0) e.target.style.backgroundColor = current_pixcolor
+    if (clownify) e.target.style.backgroundColor = hexGen()
+    else e.target.style.backgroundColor = current_pixcolor
+    //if (e.button == 0) e.target.style.backgroundColor = current_pixcolor
     //if (e.button == 2) e.target.style.backgroundColor = 'transparent'
-        //  try console logging the right click
-       //   set "painted" toggle for each pixel
+    // set "painted" toggle for each pixel
 }
 
 function erasePixel(e) {
@@ -212,8 +243,8 @@ show_grid_btn.addEventListener('click', () => {
     show_grid = show_grid ? false : true
     pixels.forEach(pixel => {
       if (show_grid) {
-        grid.style.border = "0.5px solid #2dd4cc"
-        pixel.style.border = "1px solid #2dd4cc"
+        //grid.style.border = "0.5px solid #2dd4cc"
+        pixel.style.border = "0.5px solid #2dd4cc"
       } else {
         pixel.style.border = 0
         grid.style.border = 0
@@ -225,7 +256,7 @@ clear_grid.addEventListener('click', () => {
     pixels.forEach(pixel => {
         pixel.style.backgroundColor = 'transparent'
     })
-    current_pixcolor = def_pixcolor
+    //current_pixcolor = def_pixcolor
 })
 
 //  Light mode switch
@@ -289,7 +320,7 @@ bg_color.append(def_bgcolor, pick_bgcolor)
 
 options_group1.appendChild(color_btns)
 options_group1.appendChild(msg)
-options_group1.appendChild(randomize)
+options_group1.appendChild(clown_btn)
 options_group2.append(bg_color, show_grid_btn, clear_grid, light_switch)
 
 lower_container.appendChild(options_group1)

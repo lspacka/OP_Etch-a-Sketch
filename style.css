@@ -111,7 +111,7 @@ body {
   /*grid-template-columns: repeat(16, 1fr);
   grid-template-rows: repeat(16, 1fr);*/
   background-color: #eff1f0;
-  border: 0.5px solid #2dd4cc;
+  /*border: 0.5px solid #2dd4cc;*/
   width: 550px;
   height: 550px;
 }
@@ -130,7 +130,7 @@ body {
   margin-top: 30px;
 }
 
-#randomize {
+#clown-button {
   /*transform: translateY(359px);*/
   margin-top: 40px;
   overflow: hidden;
