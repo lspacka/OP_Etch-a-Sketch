@@ -1,8 +1,8 @@
 //  Massive clusterfuck of a code. Did the whole structure with js because of autism.
 //  lol actually its because Im an idiot and misunderstood the assignment.
 //  all the little bells and whistles were challenges I set for myself.
-//  tried to implement continuous erasing by holding the right click, but just couldnt do it.
-//  I also copied michalosman's trick for drawing while holding the left click. thanks!
+//  tried to implement continuous erasing by holding the right mouse button, but just couldnt do it.
+//  I also copied michalosman's trick for drawing while holding the lmb. thanks!
 //  https://github.com/michalosman/etch-a-sketch/blob/master/script.js
 
 //  TODO:
@@ -18,7 +18,7 @@
 //  + set light/dark mode for the page
 //  + make grid background a bit darker
 //  + make color buttons letters more contrasting on dark mode
-//  - fix right button hold erasing or add erase mode
+//  + fix right button hold erasing or add erase mode
 //  - fix buttons "animations" in dark mode (check mouseover/onmouseover event)
 //  - something like clown mode but in a narrower range like, from blue to purple
 //  - clear color buttons mapping(?)
@@ -42,6 +42,7 @@ let light_mode = true
 //let interval_ID
 let def_pixcolor = '#32a899'
 let current_pixcolor = def_pixcolor
+let erase = false
 let clownify = false
 
 const keys = ['Q', 'W', 'E', 'R',
@@ -51,7 +52,6 @@ const keys = ['Q', 'W', 'E', 'R',
 
 document.body.onmousedown = () => (mouse_down = true)
 document.body.onmouseup = () => (mouse_down = false)
-//document.body.oncontextmenu = () => (right_click = true)
 
 //  Create elements
 let body = document.querySelector('body')
@@ -102,7 +102,7 @@ color_btns.setAttribute('id', 'color-buttons')
 color_btns.innerHTML = 'Click on a key<br> To map a color to it!'
 btns_grid.setAttribute('id', 'buttons-grid')
 msg.setAttribute('id', 'message')
-msg.textContent = 'You can right click to erase one pixel at a time, or press Shift to switch to erase mode.'
+msg.textContent = 'Press Shift to switch to erase mode.'
 clown_btn.setAttribute('id', 'clown-button')
 clown_btn.setAttribute('class', 'button')
 clown_btn.textContent = 'Clownify'
@@ -143,7 +143,7 @@ btns_grid.childNodes.forEach((key, index) => {
 })
 
 //  Map color to key
-document.body.addEventListener('keypress', e => {
+document.body.addEventListener('keydown', e => {
     keys.forEach((key, index) => {
         if (key == e.key || key.toLowerCase() == e.key) {
             if (colors[index] == undefined) return
@@ -152,6 +152,9 @@ document.body.addEventListener('keypress', e => {
             clown_btn.textContent = clownify ? 'Normal' : 'Clownify'
         }
     })
+    if (e.key == 'Shift') {
+        erase = erase ? false : true
+    }
 })
 
 //  Random colors function
@@ -202,23 +205,14 @@ pixels = grid.childNodes
 pixels.forEach(pixel => { 
    pixel.addEventListener('mouseover', paintPixel)
    pixel.addEventListener('mousedown', paintPixel)
-   // these 2 below might be the key
-   //pixel.addEventListener('mouseover', erasePixel)
-   //pixel.addEventListener('mousedown', erasePixel)
 })
 
 function paintPixel(e) {
     if (e.type == 'mouseover' && !mouse_down) return
 
     if (clownify) e.target.style.backgroundColor = hexGen()
+    else if (erase) e.target.style.backgroundColor = 'transparent'
     else e.target.style.backgroundColor = current_pixcolor
-    //if (e.button == 0) e.target.style.backgroundColor = current_pixcolor
-    //if (e.button == 2) e.target.style.backgroundColor = 'transparent'
-    // set "painted" toggle for each pixel
-}
-
-function erasePixel(e) {
-    //
 }
 
 //  OPTIONS GROUP 2
@@ -245,7 +239,6 @@ show_grid_btn.addEventListener('click', () => {
     show_grid = show_grid ? false : true
     pixels.forEach(pixel => {
       if (show_grid) {
-        //grid.style.border = "0.5px solid #2dd4cc"
         pixel.style.border = "0.5px solid #2dd4cc"
       } else {
         pixel.style.border = 0
@@ -258,7 +251,6 @@ clear_grid.addEventListener('click', () => {
     pixels.forEach(pixel => {
         pixel.style.backgroundColor = 'transparent'
     })
-    //current_pixcolor = def_pixcolor
 })
 
 //  Light mode switch
