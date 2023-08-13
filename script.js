@@ -19,8 +19,10 @@
 //  + make grid background a bit darker
 //  + make color buttons letters more contrasting on dark mode
 //  + fix right button hold erasing or add erase mode
+//  - little icon that indicates if its in painting or erase mode
 //  - fix buttons "animations" in dark mode (check mouseover/onmouseover event)
 //  - something like clown mode but in a narrower range like, from blue to purple
+//  - key shortcuts of the buttons. show them in a modal
 //  - clear color buttons mapping(?)
 //  - secret "exai" command
 //  - choose grid color(?)
@@ -39,7 +41,6 @@ let def_dark_bg = '#24282a'
 let mouse_down = false
 let right_click = false
 let light_mode = true
-//let interval_ID
 let def_pixcolor = '#32a899'
 let current_pixcolor = def_pixcolor
 let erase = false
@@ -50,20 +51,20 @@ const keys = ['Q', 'W', 'E', 'R',
               'Z', 'X', 'C', 'V'
 ]
 
-document.body.onmousedown = () => (mouse_down = true)
-document.body.onmouseup = () => (mouse_down = false)
+//document.body.onmousedown = () => (mouse_down = true)
+//document.body.onmouseup = () => (mouse_down = false)
 
 //  Create elements
 let body = document.querySelector('body')
 let big_container = document.createElement('div')
 let game_name = document.createElement('p')
 let slider_container = document.createElement('div')
-let instructions = document.createElement('p')
+let slider = document.createElement('input')
+//let instructions = document.createElement('p')
 let upper_container = document.createElement('div')
 let lower_container = document.createElement('div')
 let options_group1 = document.createElement('div')
 let options_group2 = document.createElement('div')
-//let slider = document.createElement('div')
 let grid = document.createElement('div')
 
 //  Options group 1
@@ -88,10 +89,10 @@ big_container.setAttribute('id', 'big-container')
 game_name.setAttribute('id', 'name')
 game_name.textContent = 'Eche Sketch'
 slider_container.setAttribute('id', 'slider-container')
-slider_container.textContent = 'Grid Size'
-instructions.setAttribute('id', 'instructions')
-instructions.textContent = 'Left click to draw. Right click to erase'
-//slider.setAttribute('id', 'grid-slider')
+slider.setAttribute('id', 'slider')
+slider.setAttribute('type', 'range')
+slider.setAttribute('min', '8')
+slider.setAttribute('max', '64')
 grid.setAttribute('id', 'grid-container')
 upper_container.setAttribute('id', 'upper-container')
 lower_container.setAttribute('id', 'lower-container')
@@ -102,7 +103,7 @@ color_btns.setAttribute('id', 'color-buttons')
 color_btns.innerHTML = 'Click on a key<br> To map a color to it!'
 btns_grid.setAttribute('id', 'buttons-grid')
 msg.setAttribute('id', 'message')
-msg.textContent = 'Press Shift to switch to erase mode.'
+msg.textContent = 'Press Shift to switch Between paint and Erase mode.'
 clown_btn.setAttribute('id', 'clown-button')
 clown_btn.setAttribute('class', 'button')
 clown_btn.textContent = 'Clownify'
@@ -125,6 +126,45 @@ clear_grid.textContent = 'Clear'
 light_switch.setAttribute('id', 'light-switch')
 light_switch.setAttribute('src', 'moon_temp.png')
 
+grid.onmousedown = () => (mouse_down = true)
+grid.onmouseup = () => (mouse_down = false)
+
+function drawGrid(size) {
+    grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`
+    grid.style.gridTemplateRows = `repeat(${size}, 1fr)`
+
+    for (let i = 0; i < size; i++) {
+        for (let j = 0; j < size; j++) {
+            grid.innerHTML += `<div class="pixel"></div>`       
+        }
+    }
+}
+
+//  Set grid slider
+slider.addEventListener('input', e => {
+    //
+})
+
+//  Prevents dragging and context menu from appearing on the grid
+grid.addEventListener('dragstart', e => {
+    e.preventDefault()
+})
+grid.addEventListener('contextmenu', e => {
+    e.preventDefault()
+})
+
+drawGrid(grid_size)
+/*
+//  Grid population
+grid.style.gridTemplateColumns = `repeat(${grid_size}, 1fr)`
+grid.style.gridTemplateRows = `repeat(${grid_size}, 1fr)`
+
+for (let i = 0; i < grid_size; i++) {
+    for (let j = 0; j < grid_size; j++) {
+        grid.innerHTML += `<div class="pixel"></div>`       
+    }
+}
+*/
 //  Create color buttons grid
 for (let i = 0; i < 12; i++) {
     btns_grid.innerHTML += `<div class="color-button" id="${keys[i]}">
@@ -154,7 +194,9 @@ document.body.addEventListener('keydown', e => {
     })
     if (e.key == 'Shift') {
         erase = erase ? false : true
+        console.log(erase, clownify)
     }
+    if (e.key == 'P' || e.key == 'p') console.log(colors)   
 })
 
 //  Random colors function
@@ -181,7 +223,7 @@ clown_btn.addEventListener('click', () => {
     clownify = clownify ? false : true
     clown_btn.textContent = clownify ? 'Normal' : 'Clownify'
 })
-
+/*
 //  Prevents dragging and context menu from appearing on the grid
 grid.addEventListener('dragstart', e => {
     e.preventDefault()
@@ -199,7 +241,7 @@ for (let i = 0; i < grid_size; i++) {
         grid.innerHTML += `<div class="pixel"></div>`       
     }
 }
-
+*/
 //  Mouse drawing/erasing
 pixels = grid.childNodes
 pixels.forEach(pixel => { 
@@ -210,9 +252,10 @@ pixels.forEach(pixel => {
 function paintPixel(e) {
     if (e.type == 'mouseover' && !mouse_down) return
 
-    if (clownify) e.target.style.backgroundColor = hexGen()
-    else if (erase) e.target.style.backgroundColor = 'transparent'
-    else e.target.style.backgroundColor = current_pixcolor
+    if (erase) e.target.style.backgroundColor = 'transparent'
+    if (erase && clownify) e.target.style.backgroundColor = 'transparent'
+    else if (clownify) e.target.style.backgroundColor = hexGen()
+    else if (!erase) e.target.style.backgroundColor = current_pixcolor
 }
 
 //  OPTIONS GROUP 2
@@ -309,6 +352,7 @@ light_switch.addEventListener('click', () => {
 })
 
 //  Append children to elements
+slider_container.appendChild(slider)
 upper_container.append(game_name, slider_container)
 color_btns.appendChild(btns_grid)
 pick_bgcolor.append(bgcolor_picker,pick_bg_btn)
@@ -323,7 +367,6 @@ lower_container.appendChild(options_group1)
 lower_container.appendChild(grid)
 lower_container.appendChild(options_group2)
 big_container.appendChild(upper_container)
-big_container.appendChild(instructions)
 big_container.appendChild(lower_container)
 
 body.appendChild(big_container)

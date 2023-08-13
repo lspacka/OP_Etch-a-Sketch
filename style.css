@@ -89,9 +89,13 @@ body {
   height: fit-content;
   margin: 0 auto;
   text-align: center;
-  /*transform: translateY(35px);*/
+  transform: translateY(45px);
 }
-
+/*
+#slider {
+  appearance: none;
+}
+*/
 #instructions {
   width:fit-content;
   height: fit-content;
