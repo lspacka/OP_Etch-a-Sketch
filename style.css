@@ -79,9 +79,9 @@ body {
   margin: 0 auto;
   width: fit-content;
   text-align: center;
-  /*transform: translateY(10px);*/
   font-size: 30px;
   color: #84c2c2;
+  transform: translateY(15px);
 }
 
 #slider-container {
@@ -89,13 +89,20 @@ body {
   height: fit-content;
   margin: 0 auto;
   text-align: center;
-  transform: translateY(45px);
+  transform: translateY(85px);
 }
-/*
+
 #slider {
-  appearance: none;
+  /*appearance: none;*/
+  transform: translateY(-5px);
 }
-*/
+
+
+#slider-value {
+  text-align: center;
+  font-size: 0.9rem;
+  transform: translateY(-15px);
+}
 #instructions {
   width:fit-content;
   height: fit-content;
@@ -127,14 +134,19 @@ body {
 }
 
 #color-buttons {
-  /*transform: translateY(50px);*/
+  text-align: center;
   width: fit-content;
   height: fit-content;
 }
 
-#message {
+.message {
+  text-align: center;
   margin-top: 10px;
   line-height: 20px;
+}
+
+#message-1 {
+  transform: translateY(60px);
 }
 
 #clown-button {

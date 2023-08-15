@@ -2,7 +2,7 @@
 //  lol actually its because Im an idiot and misunderstood the assignment.
 //  all the little bells and whistles were challenges I set for myself.
 //  tried to implement continuous erasing by holding the right mouse button, but just couldnt do it.
-//  I also copied michalosman's trick for drawing while holding the lmb. thanks!
+//  I also copied michalosman's tricks for changing the grid size, and for drawing while holding the lmb. thanks!
 //  https://github.com/michalosman/etch-a-sketch/blob/master/script.js
 
 //  TODO:
@@ -11,7 +11,7 @@
 //  + set grid background
 //  + test drawing with one color (with mousehold)
 //  + set grid clear
-//  - make size slider
+//  + grid size slider
 //  + set color selector for keys
 //  + set clown mode (make a random hex number generating function)
 //  + set grid show
@@ -19,17 +19,17 @@
 //  + make grid background a bit darker
 //  + make color buttons letters more contrasting on dark mode
 //  + fix right button hold erasing or add erase mode
-//  - little icon that indicates if its in painting or erase mode
+//  - little icon that indicates paint or erase mode (to the left of the slider) || highlight the respective words 
 //  - fix buttons "animations" in dark mode (check mouseover/onmouseover event)
-//  - something like clown mode but in a narrower range like, from blue to purple
-//  - key shortcuts of the buttons. show them in a modal
+//  - something like clown mode but in a set range, like from blue to purple
+//  - key shortcuts of the buttons in a modal
 //  - clear color buttons mapping(?)
 //  - secret "exai" command
 //  - choose grid color(?)
 //  - export PNG(?)
 
 
-let grid_size = 32
+let grid_size = 24   //  between 8 and 64
 let pixels
 let colors = []
 let color_keys = []
@@ -39,7 +39,6 @@ let def_state = true
 let def_light_bg = '#eff1f0'
 let def_dark_bg = '#24282a'
 let mouse_down = false
-let right_click = false
 let light_mode = true
 let def_pixcolor = '#32a899'
 let current_pixcolor = def_pixcolor
@@ -51,16 +50,14 @@ const keys = ['Q', 'W', 'E', 'R',
               'Z', 'X', 'C', 'V'
 ]
 
-//document.body.onmousedown = () => (mouse_down = true)
-//document.body.onmouseup = () => (mouse_down = false)
-
 //  Create elements
 let body = document.querySelector('body')
 let big_container = document.createElement('div')
-let game_name = document.createElement('p')
+let game_name = document.createElement('div')
+//let msg_1 = document.createElement('p')
 let slider_container = document.createElement('div')
 let slider = document.createElement('input')
-//let instructions = document.createElement('p')
+let slider_value = document.createElement('p')
 let upper_container = document.createElement('div')
 let lower_container = document.createElement('div')
 let options_group1 = document.createElement('div')
@@ -71,7 +68,7 @@ let grid = document.createElement('div')
 let color_btns = document.createElement('div')
 let btns_grid = document.createElement('div')
 let color_btn = document.createElement('div')
-let msg = document.createElement('p')
+let msg_2 = document.createElement('p')
 let clown_btn = document.createElement('button')
 
 //  Options group 2
@@ -88,11 +85,17 @@ let light_switch = document.createElement('img')
 big_container.setAttribute('id', 'big-container')
 game_name.setAttribute('id', 'name')
 game_name.textContent = 'Eche Sketch'
+//msg_1.setAttribute('id', 'message-1')
+//msg_1.setAttribute('class', 'message')
+//msg_1.textContent = 'Press right Shift to enter grid size'
 slider_container.setAttribute('id', 'slider-container')
 slider.setAttribute('id', 'slider')
 slider.setAttribute('type', 'range')
 slider.setAttribute('min', '8')
 slider.setAttribute('max', '64')
+slider.setAttribute('value', '36')
+slider_value.setAttribute('id', 'slider-value')
+slider_value.textContent = '36 x 36'
 grid.setAttribute('id', 'grid-container')
 upper_container.setAttribute('id', 'upper-container')
 lower_container.setAttribute('id', 'lower-container')
@@ -102,8 +105,8 @@ options_group2.setAttribute('id', 'options-group-2')
 color_btns.setAttribute('id', 'color-buttons')
 color_btns.innerHTML = 'Click on a key<br> To map a color to it!'
 btns_grid.setAttribute('id', 'buttons-grid')
-msg.setAttribute('id', 'message')
-msg.textContent = 'Press Shift to switch Between paint and Erase mode.'
+msg_2.setAttribute('class', 'message')
+msg_2.textContent = 'Press left Shift to switch Between paint and Erase mode.'
 clown_btn.setAttribute('id', 'clown-button')
 clown_btn.setAttribute('class', 'button')
 clown_btn.textContent = 'Clownify'
@@ -126,24 +129,22 @@ clear_grid.textContent = 'Clear'
 light_switch.setAttribute('id', 'light-switch')
 light_switch.setAttribute('src', 'moon_temp.png')
 
-grid.onmousedown = () => (mouse_down = true)
-grid.onmouseup = () => (mouse_down = false)
+//  Slider actions
+slider.onmousemove = (e) => {
+    slider_value.textContent = `${e.target.value} x ${e.target.value}`
+}
+slider.onchange = (e) => changeSize(e.target.value)
 
-function drawGrid(size) {
-    grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`
-    grid.style.gridTemplateRows = `repeat(${size}, 1fr)`
-
-    for (let i = 0; i < size; i++) {
-        for (let j = 0; j < size; j++) {
-            grid.innerHTML += `<div class="pixel"></div>`       
-        }
-    }
+function changeSize(value) {
+    grid_size = value
+    grid.innerHTML = ''
+    drawGrid(value)
+    setPixels()
 }
 
-//  Set grid slider
-slider.addEventListener('input', e => {
-    //
-})
+//  Grid actions
+grid.onmousedown = () => (mouse_down = true)
+grid.onmouseup = () => (mouse_down = false)
 
 //  Prevents dragging and context menu from appearing on the grid
 grid.addEventListener('dragstart', e => {
@@ -153,18 +154,50 @@ grid.addEventListener('contextmenu', e => {
     e.preventDefault()
 })
 
-drawGrid(grid_size)
-/*
-//  Grid population
-grid.style.gridTemplateColumns = `repeat(${grid_size}, 1fr)`
-grid.style.gridTemplateRows = `repeat(${grid_size}, 1fr)`
+function drawGrid(size) {
+    grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`
+    grid.style.gridTemplateRows = `repeat(${size}, 1fr)`
 
-for (let i = 0; i < grid_size; i++) {
-    for (let j = 0; j < grid_size; j++) {
-        grid.innerHTML += `<div class="pixel"></div>`       
+    for (let i = 0; i < size*size; i++) {
+        const pixel = document.createElement('div')
+        pixel.classList.add('pixel')
+        grid.appendChild(pixel)
     }
 }
-*/
+
+function setPixels() {
+    pixels = grid.childNodes
+    pixels.forEach(pixel => { 
+        pixel.addEventListener('mouseover', paintPixel)
+        pixel.addEventListener('mousedown', paintPixel)
+    })
+}
+
+function paintPixel(e) {
+    if (e.type == 'mouseover' && !mouse_down) return
+
+    if (erase) e.target.style.backgroundColor = 'transparent'
+    if (erase && clownify) e.target.style.backgroundColor = 'transparent'
+    else if (clownify) e.target.style.backgroundColor = hexGen()
+    else if (!erase) e.target.style.backgroundColor = current_pixcolor
+}
+
+//  Keyboard mappings
+document.body.addEventListener('keydown', e => {
+    keys.forEach((key, index) => {
+        if (key == e.key || key.toLowerCase() == e.key) {
+            if (colors[index] == undefined) return
+            current_pixcolor = colors[index]
+            clownify = false
+            clown_btn.textContent = clownify ? 'Normal' : 'Clownify'
+        }
+    })
+    if (e.key == 'Shift') {
+        erase = erase ? false : true
+    }
+    if (e.key == 'P' || e.key == 'p') console.log(colors) 
+})
+
 //  Create color buttons grid
 for (let i = 0; i < 12; i++) {
     btns_grid.innerHTML += `<div class="color-button" id="${keys[i]}">
@@ -180,23 +213,6 @@ btns_grid.childNodes.forEach((key, index) => {
         key.style.backgroundColor = color.value
         colors[index] = color.value
     }
-})
-
-//  Map color to key
-document.body.addEventListener('keydown', e => {
-    keys.forEach((key, index) => {
-        if (key == e.key || key.toLowerCase() == e.key) {
-            if (colors[index] == undefined) return
-            current_pixcolor = colors[index]
-            clownify = false
-            clown_btn.textContent = clownify ? 'Normal' : 'Clownify'
-        }
-    })
-    if (e.key == 'Shift') {
-        erase = erase ? false : true
-        console.log(erase, clownify)
-    }
-    if (e.key == 'P' || e.key == 'p') console.log(colors)   
 })
 
 //  Random colors function
@@ -223,40 +239,7 @@ clown_btn.addEventListener('click', () => {
     clownify = clownify ? false : true
     clown_btn.textContent = clownify ? 'Normal' : 'Clownify'
 })
-/*
-//  Prevents dragging and context menu from appearing on the grid
-grid.addEventListener('dragstart', e => {
-    e.preventDefault()
-})
-grid.addEventListener('contextmenu', e => {
-    e.preventDefault()
-})
 
-//  Grid population
-grid.style.gridTemplateColumns = `repeat(${grid_size}, 1fr)`
-grid.style.gridTemplateRows = `repeat(${grid_size}, 1fr)`
-
-for (let i = 0; i < grid_size; i++) {
-    for (let j = 0; j < grid_size; j++) {
-        grid.innerHTML += `<div class="pixel"></div>`       
-    }
-}
-*/
-//  Mouse drawing/erasing
-pixels = grid.childNodes
-pixels.forEach(pixel => { 
-   pixel.addEventListener('mouseover', paintPixel)
-   pixel.addEventListener('mousedown', paintPixel)
-})
-
-function paintPixel(e) {
-    if (e.type == 'mouseover' && !mouse_down) return
-
-    if (erase) e.target.style.backgroundColor = 'transparent'
-    if (erase && clownify) e.target.style.backgroundColor = 'transparent'
-    else if (clownify) e.target.style.backgroundColor = hexGen()
-    else if (!erase) e.target.style.backgroundColor = current_pixcolor
-}
 
 //  OPTIONS GROUP 2
 
@@ -352,14 +335,14 @@ light_switch.addEventListener('click', () => {
 })
 
 //  Append children to elements
-slider_container.appendChild(slider)
+slider_container.append(slider, slider_value)
 upper_container.append(game_name, slider_container)
 color_btns.appendChild(btns_grid)
 pick_bgcolor.append(bgcolor_picker,pick_bg_btn)
 bg_color.append(def_bgcolor, pick_bgcolor)
 
 options_group1.appendChild(color_btns)
-options_group1.appendChild(msg)
+options_group1.appendChild(msg_2)
 options_group1.appendChild(clown_btn)
 options_group2.append(bg_color, show_grid_btn, clear_grid, light_switch)
 
@@ -370,3 +353,8 @@ big_container.appendChild(upper_container)
 big_container.appendChild(lower_container)
 
 body.appendChild(big_container)
+
+window.onload = () => {
+    drawGrid(grid_size)
+    setPixels()
+}
