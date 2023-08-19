@@ -6,28 +6,15 @@
 //  https://github.com/michalosman/etch-a-sketch/blob/master/script.js
 
 //  TODO:
-//  + fix vertical overflow
-//  + draw grid dynamically
-//  + set grid background
-//  + test drawing with one color (with mousehold)
-//  + set grid clear
-//  + grid size slider
-//  + set color selector for keys
-//  + set clown mode (make a random hex number generating function)
-//  + set grid show
-//  + set light/dark mode for the page
-//  + make grid background a bit darker
-//  + make color buttons letters more contrasting on dark mode
-//  + fix right button hold erasing or add erase mode
-//  - little icon that indicates paint or erase mode (to the left of the slider) || highlight the respective words 
+//  - secret "exai" command
 //  - fix buttons "animations" in dark mode (check mouseover/onmouseover event)
 //  - something like clown mode but in a set range, like from blue to purple
-//  - key shortcuts of the buttons in a modal
+//  - key shortcuts in a modal
 //  - clear color buttons mapping(?)
-//  - secret "exai" command
+//  - little icon that indicates paint or erase mode (?)
+//  - import color buttons values from array (?)
 //  - choose grid color(?)
 //  - export PNG(?)
-
 
 let grid_size = 24   //  between 8 and 64
 let pixels
@@ -54,7 +41,6 @@ const keys = ['Q', 'W', 'E', 'R',
 let body = document.querySelector('body')
 let big_container = document.createElement('div')
 let game_name = document.createElement('div')
-//let msg_1 = document.createElement('p')
 let slider_container = document.createElement('div')
 let slider = document.createElement('input')
 let slider_value = document.createElement('p')
@@ -85,9 +71,6 @@ let light_switch = document.createElement('img')
 big_container.setAttribute('id', 'big-container')
 game_name.setAttribute('id', 'name')
 game_name.textContent = 'Eche Sketch'
-//msg_1.setAttribute('id', 'message-1')
-//msg_1.setAttribute('class', 'message')
-//msg_1.textContent = 'Press right Shift to enter grid size'
 slider_container.setAttribute('id', 'slider-container')
 slider.setAttribute('id', 'slider')
 slider.setAttribute('type', 'range')
@@ -306,7 +289,7 @@ light_switch.addEventListener('click', () => {
             button.style.color = '#2d2f30'
         })
 
-        light_switch.setAttribute('src', 'moon_temp.png')
+        light_switch.setAttribute('src', 'images/moon_temp.png')
     } else {
         body.style.backgroundColor = '#181a1b'
         body.style.color = '#e8e6e3'
@@ -330,7 +313,7 @@ light_switch.addEventListener('click', () => {
             button.style.color = '#d3dff4'
         })
         
-        light_switch.setAttribute('src', 'sun_temp.png')
+        light_switch.setAttribute('src', 'images/sun_temp.png')
     }
 })
 
