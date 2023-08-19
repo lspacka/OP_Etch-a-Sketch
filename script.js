@@ -55,7 +55,8 @@ let color_btns = document.createElement('div')
 let btns_grid = document.createElement('div')
 let color_btn = document.createElement('div')
 let msg_2 = document.createElement('p')
-let clown_btn = document.createElement('button')
+let clown_switch = document.createElement('img')
+//let clown_btn = document.createElement('button')
 
 //  Options group 2
 let bg_color = document.createElement('div')
@@ -70,7 +71,7 @@ let light_switch = document.createElement('img')
 //  Set attributes
 big_container.setAttribute('id', 'big-container')
 game_name.setAttribute('id', 'name')
-game_name.textContent = 'Eche Sketch'
+game_name.textContent = 'Pixel Sketch'
 slider_container.setAttribute('id', 'slider-container')
 slider.setAttribute('id', 'slider')
 slider.setAttribute('type', 'range')
@@ -89,10 +90,12 @@ color_btns.setAttribute('id', 'color-buttons')
 color_btns.innerHTML = 'Click on a key<br> To map a color to it!'
 btns_grid.setAttribute('id', 'buttons-grid')
 msg_2.setAttribute('class', 'message')
-msg_2.textContent = 'Press left Shift to switch Between paint and Erase mode.'
-clown_btn.setAttribute('id', 'clown-button')
-clown_btn.setAttribute('class', 'button')
-clown_btn.textContent = 'Clownify'
+msg_2.textContent = 'Press left Shift to switch between Paint and Erase mode.'
+clown_switch.setAttribute('id', 'clown-switch')
+clown_switch.setAttribute('src', 'images/clown_temp.png')
+//clown_btn.setAttribute('id', 'clown-button')
+//clown_btn.setAttribute('class', 'button')
+//clown_btn.textContent = 'Clownify'
 
 bg_color.setAttribute('id', 'bg-color')
 bg_color.textContent = 'Background Color'
@@ -110,7 +113,7 @@ clear_grid.setAttribute('class', 'button')
 clear_grid.setAttribute('id', 'clear-grid')
 clear_grid.textContent = 'Clear'
 light_switch.setAttribute('id', 'light-switch')
-light_switch.setAttribute('src', 'moon_temp.png')
+light_switch.setAttribute('src', 'images/moon_temp.png')
 
 //  Slider actions
 slider.onmousemove = (e) => {
@@ -172,7 +175,7 @@ document.body.addEventListener('keydown', e => {
             if (colors[index] == undefined) return
             current_pixcolor = colors[index]
             clownify = false
-            clown_btn.textContent = clownify ? 'Normal' : 'Clownify'
+            clown_switch.setAttribute('src', 'images/clown_temp.png')
         }
     })
     if (e.key == 'Shift') {
@@ -218,9 +221,13 @@ function hexGen() {
 }
 
 //  Clown mode
-clown_btn.addEventListener('click', () => {
+clown_switch.addEventListener('click', () => {
     clownify = clownify ? false : true
-    clown_btn.textContent = clownify ? 'Normal' : 'Clownify'
+    if (clownify) {
+        clown_switch.setAttribute('src', 'images/sans_temp.png')
+    } else {
+        clown_switch.setAttribute('src', 'images/clown_temp.png')
+    }
 })
 
 
@@ -326,7 +333,7 @@ bg_color.append(def_bgcolor, pick_bgcolor)
 
 options_group1.appendChild(color_btns)
 options_group1.appendChild(msg_2)
-options_group1.appendChild(clown_btn)
+options_group1.appendChild(clown_switch)
 options_group2.append(bg_color, show_grid_btn, clear_grid, light_switch)
 
 lower_container.appendChild(options_group1)
