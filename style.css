@@ -93,10 +93,17 @@ body {
 }
 
 #slider {
-  /*appearance: none;*/
+  appearance: none;
+  background-color: transparent;
   transform: translateY(-5px);
 }
 
+#slider::-webkit-slider-thumb {
+  width: 20px;
+  height: 20px;
+  border: 0;
+  background: url('images/thumb.png')
+}
 
 #slider-value {
   text-align: center;
@@ -111,7 +118,7 @@ body {
   text-align: center;
 }
 
-#grid-slider {
+#grid-slider {  /* whats this? */
   width: fit-content;
   height: fit-content;
   margin: 0 auto;

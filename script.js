@@ -1,5 +1,5 @@
 //  Massive clusterfuck of a code. Did the whole structure with js because of autism.
-//  lol actually its because Im an idiot and misunderstood the assignment.
+//  actually, its because Im an idiot and misunderstood the assignment.
 //  all the little bells and whistles were challenges I set for myself.
 //  tried to implement continuous erasing by holding the right mouse button, but just couldnt do it.
 //  I also copied michalosman's tricks for changing the grid size, and for drawing while holding the lmb. thanks!
@@ -7,6 +7,7 @@
 
 //  TODO:
 //  - secret "exai" command
+//  - refactor last part
 //  - fix buttons "animations" in dark mode (check mouseover/onmouseover event)
 //  - something like clown mode but in a set range, like from blue to purple
 //  - key shortcuts in a modal
