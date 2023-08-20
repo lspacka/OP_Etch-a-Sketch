@@ -6,10 +6,6 @@
 //  https://github.com/michalosman/etch-a-sketch/blob/master/script.js
 
 //  TODO:
-//  - secret "exai" command
-//  - refactor last part
-//  - set shortcut for default pixel color "Or press 1 for default Color"
-//  - link to images
 //  - fix buttons default behavior (animation) after changing light mode (check mouseover/onmouseover event)
 //  - something like clown mode but in a set range, like from blue to purple
 //  - key shortcuts in a modal
@@ -92,16 +88,17 @@ color_btns.setAttribute('id', 'color-buttons')
 color_btns.innerHTML = 'Click on a key<br> To map a color to it!'
 btns_grid.setAttribute('id', 'buttons-grid')
 msg_2.setAttribute('class', 'message')
-msg_2.textContent = 'Press left Shift to switch between Paint and Erase mode.'
+msg_2.textContent = 'Press Esc to switch between Paint and Erase mode.'
 clown_switch.setAttribute('id', 'clown-switch')
-clown_switch.setAttribute('src', 'images/clown_temp.png')
+clown_switch.setAttribute('src', 'images/clown.png')
 
-bg_color.setAttribute('id', 'bg-color')
+bg_color.setAttribute('id', 'bg-color-container')
 bg_color.textContent = 'Background Color'
 def_bgcolor.setAttribute('class', 'button')
 def_bgcolor.textContent = 'Default'
 pick_bgcolor.setAttribute('id', 'pick-bgcolor')
 pick_bg_btn.setAttribute('class', 'button')
+pick_bg_btn.setAttribute('id', 'pick-bgcolor-button')
 pick_bg_btn.textContent = 'Choose'
 bgcolor_picker.setAttribute('type', 'color')
 bgcolor_picker.setAttribute('id', 'bgcolor-picker')
@@ -175,13 +172,13 @@ document.body.addEventListener('keydown', e => {
             if (colors[index] == undefined) return
             current_pixcolor = colors[index]
             clownify = false
-            clown_switch.setAttribute('src', 'images/clown_temp.png')
+            clown_switch.setAttribute('src', 'images/clown.png')
         }
     })
-    if (e.key == 'Shift') {
-        erase = erase ? false : true
-    }
+    if (e.key == 'Escape') erase = erase ? false : true
+    if (e.code == 'ShiftLeft') clownSwitch()
     if (e.key == 'P' || e.key == 'p') console.log(colors) 
+    console.log(e)
 })
 
 //  Create color buttons grid
@@ -221,14 +218,16 @@ function hexGen() {
 }
 
 //  Clown mode
-clown_switch.addEventListener('click', () => {
+function clownSwitch() {
     clownify = clownify ? false : true
     if (clownify) {
-        clown_switch.setAttribute('src', 'images/sans_temp.png')
+        clown_switch.setAttribute('src', 'images/glider.png')
     } else {
-        clown_switch.setAttribute('src', 'images/clown_temp.png')
+        clown_switch.setAttribute('src', 'images/clown.png')
     }
-})
+}
+
+clown_switch.addEventListener('click', clownSwitch)
 
 
 //  OPTIONS GROUP 2
@@ -331,16 +330,10 @@ color_btns.appendChild(btns_grid)
 pick_bgcolor.append(bgcolor_picker,pick_bg_btn)
 bg_color.append(def_bgcolor, pick_bgcolor)
 
-options_group1.appendChild(color_btns)
-options_group1.appendChild(msg_2)
-options_group1.appendChild(clown_switch)
+options_group1.append(color_btns, msg_2, clown_switch)
 options_group2.append(bg_color, show_grid_btn, clear_grid, light_switch)
-
-lower_container.appendChild(options_group1)
-lower_container.appendChild(grid)
-lower_container.appendChild(options_group2)
-big_container.appendChild(upper_container)
-big_container.appendChild(lower_container)
+lower_container.append(options_group1, grid, options_group2)
+big_container.append(upper_container, lower_container)
 
 body.appendChild(big_container)
 
@@ -348,3 +341,5 @@ window.onload = () => {
     drawGrid(grid_size)
     setPixels()
 }
+
+//   function exai() {}
