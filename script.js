@@ -8,7 +8,9 @@
 //  TODO:
 //  - secret "exai" command
 //  - refactor last part
-//  - fix buttons "animations" in dark mode (check mouseover/onmouseover event)
+//  - set shortcut for default pixel color "Or press 1 for default Color"
+//  - link to images
+//  - fix buttons default behavior (animation) after changing light mode (check mouseover/onmouseover event)
 //  - something like clown mode but in a set range, like from blue to purple
 //  - key shortcuts in a modal
 //  - clear color buttons mapping(?)
@@ -17,19 +19,19 @@
 //  - choose grid color(?)
 //  - export PNG(?)
 
-let grid_size = 24   //  between 8 and 64
-let pixels
-let colors = []
-let color_keys = []
+let grid_size = 36   //  between 8 and 64
 let show_grid = true
 let grid_custom_bg
 let def_state = true
 let def_light_bg = '#eff1f0'
 let def_dark_bg = '#24282a'
-let mouse_down = false
-let light_mode = true
+let colors = []
+let color_keys = []
+let pixels
 let def_pixcolor = '#32a899'
 let current_pixcolor = def_pixcolor
+let mouse_down = false
+let light_mode = true
 let erase = false
 let clownify = false
 
@@ -57,7 +59,6 @@ let btns_grid = document.createElement('div')
 let color_btn = document.createElement('div')
 let msg_2 = document.createElement('p')
 let clown_switch = document.createElement('img')
-//let clown_btn = document.createElement('button')
 
 //  Options group 2
 let bg_color = document.createElement('div')
@@ -94,9 +95,6 @@ msg_2.setAttribute('class', 'message')
 msg_2.textContent = 'Press left Shift to switch between Paint and Erase mode.'
 clown_switch.setAttribute('id', 'clown-switch')
 clown_switch.setAttribute('src', 'images/clown_temp.png')
-//clown_btn.setAttribute('id', 'clown-button')
-//clown_btn.setAttribute('class', 'button')
-//clown_btn.textContent = 'Clownify'
 
 bg_color.setAttribute('id', 'bg-color')
 bg_color.textContent = 'Background Color'
@@ -127,6 +125,7 @@ function changeSize(value) {
     grid.innerHTML = ''
     drawGrid(value)
     setPixels()
+    show_grid = true
 }
 
 //  Grid actions
