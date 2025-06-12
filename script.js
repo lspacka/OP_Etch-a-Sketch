@@ -55,6 +55,7 @@ let btns_grid = document.createElement('div')
 let color_btn = document.createElement('div')
 let msg_2 = document.createElement('p')
 let clown_switch = document.createElement('img')
+let clown_switch_container = document.createElement('div')
 
 //  Options group 2
 let bg_color = document.createElement('div')
@@ -62,9 +63,12 @@ let def_bgcolor = document.createElement('button')
 let pick_bgcolor = document.createElement('div')
 let pick_bg_btn = document.createElement('button')
 let bgcolor_picker = document.createElement('input')
+let bgcolor_buttons = document.createElement('div')     //
 let show_grid_btn = document.createElement('button')
 let clear_grid = document.createElement('button')
+let grid_buttons = document.createElement('div')        //
 let light_switch = document.createElement('img')
+let light_switch_container = document.createElement('div')
 
 //  Set attributes
 big_container.setAttribute('id', 'big-container')
@@ -95,6 +99,7 @@ clown_switch.setAttribute('src', 'images/clown.png')
 bg_color.setAttribute('id', 'bg-color-container')
 bg_color.textContent = 'Background Color'
 def_bgcolor.setAttribute('class', 'button')
+def_bgcolor.classList.add('def-bgcolor')                   // 
 def_bgcolor.textContent = 'Default'
 pick_bgcolor.setAttribute('id', 'pick-bgcolor')
 pick_bg_btn.setAttribute('class', 'button')
@@ -102,14 +107,18 @@ pick_bg_btn.setAttribute('id', 'pick-bgcolor-button')
 pick_bg_btn.textContent = 'Choose'
 bgcolor_picker.setAttribute('type', 'color')
 bgcolor_picker.setAttribute('id', 'bgcolor-picker')
+bgcolor_buttons.setAttribute('class', 'bgcolor-buttons')  // 
 show_grid_btn.setAttribute('class', 'button')
 show_grid_btn.setAttribute('id', 'show-grid')
 show_grid_btn.textContent = 'Show Grid'
 clear_grid.setAttribute('class', 'button')
 clear_grid.setAttribute('id', 'clear-grid')
 clear_grid.textContent = 'Clear'
+grid_buttons.classList.add('grid-buttons')              //
 light_switch.setAttribute('id', 'light-switch')
 light_switch.setAttribute('src', 'images/moon_temp.png')
+clown_switch_container.classList.add('clown-switch-container')
+light_switch_container.classList.add('light-switch-container')
 
 //  Slider actions
 slider.onmousemove = (e) => {
@@ -328,10 +337,14 @@ slider_container.append(slider, slider_value)
 upper_container.append(game_name, slider_container)
 color_btns.appendChild(btns_grid)
 pick_bgcolor.append(bgcolor_picker,pick_bg_btn)
-bg_color.append(def_bgcolor, pick_bgcolor)
+bgcolor_buttons.append(def_bgcolor, pick_bgcolor)
+grid_buttons.append(show_grid_btn, clear_grid)
+bg_color.append(bgcolor_buttons)
+clown_switch_container.append(clown_switch)
+light_switch_container.appendChild(light_switch)
 
-options_group1.append(color_btns, msg_2, clown_switch)
-options_group2.append(bg_color, show_grid_btn, clear_grid, light_switch)
+options_group1.append(color_btns, msg_2, clown_switch_container)
+options_group2.append(bg_color, grid_buttons, light_switch_container)
 lower_container.append(options_group1, grid, options_group2)
 big_container.append(upper_container, lower_container)
 
@@ -341,5 +354,3 @@ window.onload = () => {
     drawGrid(grid_size)
     setPixels()
 }
-
-//   function exai() {}
