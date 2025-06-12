@@ -1,9 +1,15 @@
-# OP_Etch-a-Sketch
+# Etch-a-Sketch
 
 https://www.theodinproject.com/lessons/foundations-etch-a-sketch
 
+#### Live Preview:  https://lspacka.github.io/OP_Etch-a-Sketch/
 
-images:
+### Built With:
+- HTML
+- CSS
+- JavaScript
+
+#### images:
 
 https://www.pngaaa.com/detail/4765957
 
